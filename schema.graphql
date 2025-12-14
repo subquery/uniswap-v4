@@ -1,0 +1,287 @@
+type PoolManager @entity {
+  id: ID!
+  poolCount: BigInt!
+  txCount: BigInt!
+  totalVolumeUSD: Float!
+  totalVolumeETH: Float!
+  totalFeesUSD: Float!
+  totalFeesETH: Float!
+  untrackedVolumeUSD: Float!
+  totalValueLockedUSD: Float!
+  totalValueLockedETH: Float!
+  totalValueLockedUSDUntracked: Float!
+  totalValueLockedETHUntracked: Float!
+  owner: ID!
+}
+
+type Bundle @entity {
+  id: ID!
+  ethPriceUSD: Float!
+}
+
+type Token @entity {
+  id: ID!
+  symbol: String!
+  name: String!
+  decimals: BigInt!
+  totalSupply: BigInt!
+  volume: Float!
+  volumeUSD: Float!
+  untrackedVolumeUSD: Float!
+  feesUSD: Float!
+  txCount: BigInt!
+  poolCount: BigInt!
+  totalValueLocked: Float!
+  totalValueLockedUSD: Float!
+  totalValueLockedUSDUntracked: Float!
+  derivedETH: Float!
+  # whitelistPools: [Pool!]! @derivedFrom(field: "token0")
+  # whitelistPools1: [Pool!]! @derivedFrom(field: "token1")
+  tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
+}
+
+type Pool @entity {
+  id: ID!
+  createdAtTimestamp: BigInt!
+  createdAtBlockNumber: BigInt!
+  token0: Token!
+  token1: Token!
+  feeTier: BigInt!
+  liquidity: BigInt!
+  sqrtPrice: BigInt!
+  token0Price: Float!
+  token1Price: Float!
+  tick: BigInt
+  tickSpacing: BigInt!
+  observationIndex: BigInt!
+  volumeToken0: Float!
+  volumeToken1: Float!
+  volumeUSD: Float!
+  untrackedVolumeUSD: Float!
+  feesUSD: Float!
+  txCount: BigInt!
+  collectedFeesToken0: Float!
+  collectedFeesToken1: Float!
+  collectedFeesUSD: Float!
+  totalValueLockedToken0: Float!
+  totalValueLockedToken1: Float!
+  totalValueLockedETH: Float!
+  totalValueLockedUSD: Float!
+  totalValueLockedUSDUntracked: Float!
+  liquidityProviderCount: BigInt!
+  poolHourData: [PoolHourData!]! @derivedFrom(field: "pool")
+  poolDayData: [PoolDayData!]! @derivedFrom(field: "pool")
+  hooks: String!
+  modifyLiquiditys: [ModifyLiquidity!]! @derivedFrom(field: "pool")
+  swaps: [Swap!]! @derivedFrom(field: "pool")
+  ticks: [Tick!]! @derivedFrom(field: "pool")
+}
+
+type Tick @entity {
+  id: ID!
+  poolAddress: String
+  tickIdx: BigInt!
+  pool: Pool!
+  liquidityGross: BigInt!
+  liquidityNet: BigInt!
+  price0: Float!
+  price1: Float!
+  createdAtTimestamp: BigInt!
+  createdAtBlockNumber: BigInt!
+}
+
+type Transaction @entity {
+  id: ID!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  gasUsed: BigInt!
+  gasPrice: BigInt!
+  modifyLiquiditys: [ModifyLiquidity]! @derivedFrom(field: "transaction")
+  swaps: [Swap]! @derivedFrom(field: "transaction")
+  transfers: [Transfer]! @derivedFrom(field: "transaction")
+  subscriptions: [Subscribe]! @derivedFrom(field: "transaction")
+  unsubscriptions: [Unsubscribe]! @derivedFrom(field: "transaction")
+}
+
+type Swap @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  pool: Pool!
+  token0: Token!
+  token1: Token!
+  sender: String!
+  origin: String!
+  amount0: Float!
+  amount1: Float!
+  amountUSD: Float!
+  sqrtPriceX96: BigInt!
+  tick: BigInt!
+  logIndex: BigInt
+}
+
+type ModifyLiquidity @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  pool: Pool!
+  token0: Token!
+  token1: Token!
+  sender: String
+  origin: String!
+  amount: BigInt!
+  amount0: Float!
+  amount1: Float!
+  amountUSD: Float
+  tickLower: BigInt!
+  tickUpper: BigInt!
+  logIndex: BigInt
+}
+
+type UniswapDayData @entity {
+  id: ID!
+  date: Int!
+  volumeETH: Float!
+  volumeUSD: Float!
+  volumeUSDUntracked: Float!
+  feesUSD: Float!
+  txCount: BigInt!
+  tvlUSD: Float!
+}
+
+type PoolDayData @entity {
+  id: ID!
+  date: Int!
+  pool: Pool!
+  liquidity: BigInt!
+  sqrtPrice: BigInt!
+  token0Price: Float!
+  token1Price: Float!
+  tick: BigInt
+  tvlUSD: Float!
+  volumeToken0: Float!
+  volumeToken1: Float!
+  volumeUSD: Float!
+  feesUSD: Float!
+  txCount: BigInt!
+  open: Float!
+  high: Float!
+  low: Float!
+  close: Float!
+}
+
+type PoolHourData @entity {
+  id: ID!
+  periodStartUnix: Int!
+  pool: Pool!
+  liquidity: BigInt!
+  sqrtPrice: BigInt!
+  token0Price: Float!
+  token1Price: Float!
+  tick: BigInt
+  tvlUSD: Float!
+  volumeToken0: Float!
+  volumeToken1: Float!
+  volumeUSD: Float!
+  feesUSD: Float!
+  txCount: BigInt!
+  open: Float!
+  high: Float!
+  low: Float!
+  close: Float!
+}
+
+type TokenDayData @entity {
+  id: ID!
+  date: Int!
+  token: Token!
+  volume: Float!
+  volumeUSD: Float!
+  untrackedVolumeUSD: Float!
+  totalValueLocked: Float!
+  totalValueLockedUSD: Float!
+  priceUSD: Float!
+  feesUSD: Float!
+  open: Float!
+  high: Float!
+  low: Float!
+  close: Float!
+}
+
+type TokenHourData @entity {
+  id: ID!
+  periodStartUnix: Int!
+  token: Token!
+  volume: Float!
+  volumeUSD: Float!
+  untrackedVolumeUSD: Float!
+  totalValueLocked: Float!
+  totalValueLockedUSD: Float!
+  priceUSD: Float!
+  feesUSD: Float!
+  open: Float!
+  high: Float!
+  low: Float!
+  close: Float!
+}
+
+type Position @entity {
+  id: ID!
+  tokenId: BigInt!
+  owner: String!
+  origin: String!
+  createdAtTimestamp: BigInt!
+  subscriptions: [Subscribe!]! @derivedFrom(field: "position")
+  unsubscriptions: [Unsubscribe!]! @derivedFrom(field: "position")
+  transfers: [Transfer!]! @derivedFrom(field: "position")
+}
+
+type Subscribe @entity {
+  id: ID!
+  tokenId: BigInt!
+  address: String!
+  transaction: Transaction!
+  logIndex: BigInt!
+  timestamp: BigInt!
+  origin: String!
+  position: Position!
+}
+
+type Unsubscribe @entity {
+  id: ID!
+  tokenId: BigInt!
+  address: String!
+  transaction: Transaction!
+  logIndex: BigInt!
+  timestamp: BigInt!
+  origin: String!
+  position: Position!
+}
+
+type Transfer @entity {
+  id: ID!
+  tokenId: BigInt!
+  from: String!
+  to: String!
+  transaction: Transaction!
+  logIndex: BigInt!
+  timestamp: BigInt!
+  origin: String!
+  position: Position!
+}
+
+type EulerSwapHook @entity {
+  id: ID!
+  hook: String!
+  eulerAccount: String!
+  asset0: String!
+  asset1: String!
+}
+
+type ArrakisHook @entity {
+  id: ID!
+  module: String!
+  salt: String!
+  createdAtTimestamp: BigInt!
+  createdAtBlockNumber: BigInt!
+}
