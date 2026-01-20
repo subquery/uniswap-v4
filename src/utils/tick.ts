@@ -2,6 +2,7 @@ import { EthereumLog } from '@subql/types-ethereum'
 import { Tick } from '../types'
 import { ONE_BD, ZERO_BI } from './constants'
 import { fastExponentiation, safeDiv } from './index'
+import bigDecimal from "js-big-decimal";
 
 export function createTick(tickId: string, tickIdx: number, poolId: string, event: EthereumLog): Tick {
   const tick = Tick.create({
@@ -12,26 +13,14 @@ export function createTick(tickId: string, tickIdx: number, poolId: string, even
     createdAtBlockNumber: BigInt(event.blockNumber),
     liquidityGross: ZERO_BI,
     liquidityNet: ZERO_BI,
-    price0: ONE_BD,
-    price1: ONE_BD
+    price0: 1,
+    price1: 1
   })
 
+  // 1.0001^tick is token1/token0.
+  const price0 = fastExponentiation(new bigDecimal('1.0001'), tickIdx)
+  tick.price0 = Number(price0.getValue())
+  tick.price1 = Number(safeDiv(ONE_BD, price0).getValue())
+
   return tick
-}
-
-export function feeTierToTickSpacing(feeTier: bigint): number {
-  if (feeTier == BigInt(100)) {
-    return 1
-  }
-  if (feeTier == BigInt(500)) {
-    return 10
-  }
-  if (feeTier == BigInt(3000)) {
-    return 60
-  }
-  if (feeTier == BigInt(10000)) {
-    return 200
-  }
-
-  throw new Error('Unexpected fee tier')
 }

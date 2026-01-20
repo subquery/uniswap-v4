@@ -1,9 +1,9 @@
+import bigDecimal from "js-big-decimal";
 import { exponentToNumber, safeDiv } from '../utils/index'
 import { Bundle, Pool, Token } from '../types'
-import { ADDRESS_ZERO, ONE_BD, ZERO_BD, ZERO_BI } from './constants'
+import { ADDRESS_ZERO, ONE_BD, Q192, ZERO_BD, ZERO_BI } from './constants'
 import { NativeTokenDetails } from './nativeTokenDetails'
 
-const Q192 = BigInt(2) ** BigInt(192)
 
 export function sqrtPriceX96ToTokenPrices(
   sqrtPriceX96: bigint,
@@ -14,12 +14,17 @@ export function sqrtPriceX96ToTokenPrices(
   const token0Decimals = token0.id == ADDRESS_ZERO ? nativeTokenDetails.decimals : token0.decimals
   const token1Decimals = token1.id == ADDRESS_ZERO ? nativeTokenDetails.decimals : token1.decimals
 
-  const num = Number(sqrtPriceX96 * sqrtPriceX96)
-  const denom = Number(Q192)
-  const price1 = (num / denom) * exponentToNumber(token0Decimals) / exponentToNumber(token1Decimals)
+  const num = sqrtPriceX96 * sqrtPriceX96;
+  const denom = Q192;
 
-  const price0 = safeDiv(1, price1)
-  return [price0, price1]
+  // const price1 = (num / denom) * exponentToBigint(BI_18) / exponentToBigint(BI_18);
+  const price1 =
+    new bigDecimal(num).divide(new bigDecimal(denom), 18)
+      .multiply(new bigDecimal(exponentToNumber(token0Decimals)))
+      .divide(new bigDecimal(exponentToNumber(token1Decimals)), 18);
+
+  const price0 = safeDiv(ONE_BD, price1, 18);
+  return [Number(price0.getValue()), Number(price1.getValue())];
 }
 
 export async function getNativePriceInUSD(stablecoinWrappedNativePoolId: string, stablecoinIsToken0: boolean): Promise<number> {
@@ -27,7 +32,7 @@ export async function getNativePriceInUSD(stablecoinWrappedNativePoolId: string,
   if (stablecoinWrappedNativePool !== undefined) {
     return stablecoinIsToken0 ? stablecoinWrappedNativePool.token0Price : stablecoinWrappedNativePool.token1Price
   } else {
-    return ZERO_BD
+    return 0;
   }
 }
 
@@ -42,7 +47,7 @@ export async function findNativePerToken(
   minimumNativeLocked: number,
 ): Promise<number> {
   if (token.id == wrappedNativeAddress || token.id == ADDRESS_ZERO) {
-    return ONE_BD
+    return 0;
   }
 
   // Simplified implementation - to be enhanced later with proper pool querying
@@ -51,11 +56,11 @@ export async function findNativePerToken(
   // hardcoded fix for incorrect rates
   // if whitelist includes token - get the safe price
   if (stablecoinAddresses.includes(token.id)) {
-    return bundle ? safeDiv(ONE_BD, bundle.ethPriceUSD) : ZERO_BD
+    return bundle ? Number(safeDiv(ONE_BD, new bigDecimal(bundle.ethPriceUSD)).getValue()) : 0
   }
 
   // For now, return the token's derivedETH or a default value
-  return token.derivedETH || ZERO_BD
+  return token.derivedETH || 0
 }
 
 /**
@@ -72,7 +77,7 @@ export async function getTrackedAmountUSD(
   whitelistTokens: string[],
 ): Promise<number> {
   const bundle = await Bundle.get('1')
-  if (!bundle) return ZERO_BD
+  if (!bundle) return 0
 
   const price0USD = token0.derivedETH * bundle.ethPriceUSD
   const price1USD = token1.derivedETH * bundle.ethPriceUSD
@@ -93,7 +98,7 @@ export async function getTrackedAmountUSD(
   }
 
   // neither token is on white list, tracked amount is 0
-  return ZERO_BD
+  return 0
 }
 
 export function calculateAmountUSD(
