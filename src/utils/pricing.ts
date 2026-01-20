@@ -47,7 +47,7 @@ export async function findNativePerToken(
   minimumNativeLocked: number,
 ): Promise<number> {
   if (token.id == wrappedNativeAddress || token.id == ADDRESS_ZERO) {
-    return 0;
+    return 1;
   }
 
   // Simplified implementation - to be enhanced later with proper pool querying
