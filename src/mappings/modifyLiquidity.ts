@@ -11,8 +11,9 @@ import {
 } from '../utils/intervalUpdates'
 import { getAmount0, getAmount1 } from '../utils/liquidityMath'
 import { calculateAmountUSD, calculateTickPrice } from '../utils/pricing'
+import { getConfig } from '../utils/config'
 
-const POOL_MANAGER_ADDRESS = '0x000000000004444c5dc75cB358380D2e3dE08A90'
+const CONFIG = getConfig()
 
 export async function handleModifyLiquidity(log: ModifyLiquidityLog): Promise<void> {
   if (!log.args) throw new Error('Log args are undefined')
@@ -25,7 +26,7 @@ export async function handleModifyLiquidity(log: ModifyLiquidityLog): Promise<vo
     return
   }
 
-  const poolManager = await PoolManager.get(POOL_MANAGER_ADDRESS)
+  const poolManager = await PoolManager.get(CONFIG.poolManagerAddress)
   if (!poolManager) {
     return
   }
@@ -182,7 +183,7 @@ export async function handleModifyLiquidity(log: ModifyLiquidityLog): Promise<vo
   await lowerTick.save()
   await upperTick.save()
 
-  await updateUniswapDayData(log, POOL_MANAGER_ADDRESS)
+  await updateUniswapDayData(log, CONFIG.poolManagerAddress)
   await updatePoolDayData(poolId, log)
   await updatePoolHourData(poolId, log)
   await updateTokenDayData(token0, log)

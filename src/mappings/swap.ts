@@ -11,27 +11,10 @@ import {
   updateTokenHourData,
   updateUniswapDayData,
 } from '../utils/intervalUpdates'
+import { getConfig } from '../utils/config'
 
-const POOL_MANAGER_ADDRESS = '0x000000000004444c5dc75cB358380D2e3dE08A90'
-
-const MAINNET_CONFIG = {
-  whitelistTokens: [
-    '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
-    '0xA0b86a33E6817Fd2Dd1f44e1e71eeEe5E4bB4EE2',  // USDC
-    '0xdAC17F958D2ee523a2206206994597C13D831ec7',  // USDT
-  ],
-  wrappedNativeAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-  stablecoinAddresses: ['0xA0b86a33E6817Fd2Dd1f44e1e71eeEe5E4bB4EE2'],
-  // USDC/WETH 0.05% pool for ETH price discovery
-  stablecoinWrappedNativePoolId: '0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8',
-  stablecoinIsToken0: true, // USDC is token0 in this pool
-  minimumNativeLocked: 0,
-  nativeTokenDetails: {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    decimals: BigInt(18)
-  }
-}
+// Get the configuration for the current chain
+const CONFIG = getConfig()
 
 export async function handleSwap(log: SwapLog): Promise<void> {
   if (!log.args) throw new Error('Log args are undefined')
@@ -44,7 +27,7 @@ export async function handleSwap(log: SwapLog): Promise<void> {
     return
   }
 
-  const poolManager = await PoolManager.get(POOL_MANAGER_ADDRESS)
+  const poolManager = await PoolManager.get(CONFIG.poolManagerAddress)
   if (!poolManager) {
     return
   }
@@ -61,11 +44,11 @@ export async function handleSwap(log: SwapLog): Promise<void> {
     return
   }
 
-  const whitelistTokens = MAINNET_CONFIG.whitelistTokens
-  const wrappedNativeAddress = MAINNET_CONFIG.wrappedNativeAddress
-  const stablecoinAddresses = MAINNET_CONFIG.stablecoinAddresses
-  const minimumNativeLocked = MAINNET_CONFIG.minimumNativeLocked
-  const nativeTokenDetails = MAINNET_CONFIG.nativeTokenDetails
+  const whitelistTokens = CONFIG.whitelistTokens
+  const wrappedNativeAddress = CONFIG.wrappedNativeAddress
+  const stablecoinAddresses = CONFIG.stablecoinAddresses
+  const minimumNativeLocked = CONFIG.minimumNativeLocked
+  const nativeTokenDetails = CONFIG.nativeTokenDetails
 
   // amounts - 0/1 are token deltas: can be positive or negative
   // Unlike V3, a negative amount represents that amount is being sent to the pool and vice versa, so invert the sign
@@ -146,7 +129,7 @@ export async function handleSwap(log: SwapLog): Promise<void> {
 
   // update USD pricing
   // Use the USDC/WETH pool for ETH price discovery
-  bundle.ethPriceUSD = await getNativePriceInUSD(MAINNET_CONFIG.stablecoinWrappedNativePoolId, MAINNET_CONFIG.stablecoinIsToken0)
+  bundle.ethPriceUSD = await getNativePriceInUSD(CONFIG.stablecoinWrappedNativePoolId, CONFIG.stablecoinIsToken0)
 
   await bundle.save()
   token0.derivedETH = await findNativePerToken(token0, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
@@ -186,7 +169,7 @@ export async function handleSwap(log: SwapLog): Promise<void> {
   })
 
   // interval data
-  const uniswapDayData = await updateUniswapDayData(log, POOL_MANAGER_ADDRESS)
+  const uniswapDayData = await updateUniswapDayData(log, CONFIG.poolManagerAddress)
   const poolDayData = await updatePoolDayData(poolId, log)
   const poolHourData = await updatePoolHourData(poolId, log)
   const token0DayData = await updateTokenDayData(token0, log)

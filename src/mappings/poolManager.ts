@@ -6,41 +6,22 @@ import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, fetchTokenTotalSu
 import { NativeTokenDetails } from '../utils/nativeTokenDetails'
 import { StaticTokenDefinition } from '../utils/staticTokenDefinition'
 import { updatePoolDayData, updatePoolHourData } from '../utils/intervalUpdates'
+import { getConfig } from '../utils/config'
 
-// Simplified config for mainnet - can be expanded later
-const MAINNET_CONFIG = {
-  poolManagerAddress: '0x000000000004444c5dc75cB358380D2e3dE08A90',
-  whitelistTokens: [
-    '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
-    '0xA0b86a33E6817Fd2Dd1f44e1e71eeEe5E4bB4EE2',  // USDC
-    '0xdAC17F958D2ee523a2206206994597C13D831ec7',  // USDT
-  ],
-  tokenOverrides: [] as StaticTokenDefinition[],
-  poolsToSkip: [] as string[],
-  stablecoinWrappedNativePoolId: '',
-  stablecoinIsToken0: true,
-  wrappedNativeAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-  stablecoinAddresses: ['0xA0b86a33E6817Fd2Dd1f44e1e71eeEe5E4bB4EE2'],
-  minimumNativeLocked: 0,
-  nativeTokenDetails: {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    decimals: BigInt(18)
-  } as NativeTokenDetails
-}
+// Get the configuration for the current chain
+const CONFIG = getConfig()
 
 export async function handleInitialize(log: InitializeLog): Promise<void> {
   if (!log.args) throw new Error('Log args are undefined')
 
-  const config = MAINNET_CONFIG
-  const poolManagerAddress = config.poolManagerAddress.toLowerCase()
-  const whitelistTokens = config.whitelistTokens
-  const tokenOverrides = config.tokenOverrides
-  const poolsToSkip = config.poolsToSkip
-  const wrappedNativeAddress = config.wrappedNativeAddress
-  const stablecoinAddresses = config.stablecoinAddresses
-  const minimumNativeLocked = config.minimumNativeLocked
-  const nativeTokenDetails = config.nativeTokenDetails
+  const poolManagerAddress = CONFIG.poolManagerAddress.toLowerCase()
+  const whitelistTokens = CONFIG.whitelistTokens
+  const tokenOverrides = CONFIG.tokenOverrides
+  const poolsToSkip = CONFIG.poolsToSkip
+  const wrappedNativeAddress = CONFIG.wrappedNativeAddress
+  const stablecoinAddresses = CONFIG.stablecoinAddresses
+  const minimumNativeLocked = CONFIG.minimumNativeLocked
+  const nativeTokenDetails = CONFIG.nativeTokenDetails
 
   const poolId = log.args.id.toLowerCase()
 
@@ -234,7 +215,7 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
   // update ETH price now that prices could have changed
   const bundle = await Bundle.get('1')
   if (bundle) {
-    bundle.ethPriceUSD = await getNativePriceInUSD(config.stablecoinWrappedNativePoolId, config.stablecoinIsToken0)
+    bundle.ethPriceUSD = await getNativePriceInUSD(CONFIG.stablecoinWrappedNativePoolId, CONFIG.stablecoinIsToken0)
     await bundle.save()
   }
 
