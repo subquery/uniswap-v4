@@ -22,6 +22,9 @@ const MAINNET_CONFIG = {
   ],
   wrappedNativeAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   stablecoinAddresses: ['0xA0b86a33E6817Fd2Dd1f44e1e71eeEe5E4bB4EE2'],
+  // USDC/WETH 0.05% pool for ETH price discovery
+  stablecoinWrappedNativePoolId: '0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8',
+  stablecoinIsToken0: true, // USDC is token0 in this pool
   minimumNativeLocked: 0,
   nativeTokenDetails: {
     name: 'Ethereum',
@@ -142,8 +145,8 @@ export async function handleSwap(log: SwapLog): Promise<void> {
   pool.token1Price = prices[1]
 
   // update USD pricing
-  // Note: For mainnet, this should use the USDC/WETH pool
-  bundle.ethPriceUSD = await getNativePriceInUSD('', true)
+  // Use the USDC/WETH pool for ETH price discovery
+  bundle.ethPriceUSD = await getNativePriceInUSD(MAINNET_CONFIG.stablecoinWrappedNativePoolId, MAINNET_CONFIG.stablecoinIsToken0)
 
   await bundle.save()
   token0.derivedETH = await findNativePerToken(token0, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)

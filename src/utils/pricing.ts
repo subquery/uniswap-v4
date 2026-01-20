@@ -1,5 +1,5 @@
 import bigDecimal from "js-big-decimal";
-import { exponentToNumber, safeDiv } from '../utils/index'
+import { exponentToNumber, safeDiv, fastExponentiation } from '../utils/index'
 import { Bundle, Pool, Token } from '../types'
 import { ADDRESS_ZERO, ONE_BD, Q192, ZERO_BD, ZERO_BI } from './constants'
 import { NativeTokenDetails } from './nativeTokenDetails'
@@ -114,7 +114,7 @@ export function calculateAmountUSD(
 // Tick utility for creating tick entities
 export function calculateTickPrice(tickIdx: number): { price0: number; price1: number } {
   // 1.0001^tick is token1/token0.
-  const price0 = Math.pow(1.0001, tickIdx)
-  const price1 = safeDiv(ONE_BD, new bigDecimal(price0), 18)
-  return { price0, price1: Number(price1.getValue()) }
+  const price0 = fastExponentiation(new bigDecimal('1.0001'), tickIdx)
+  const price1 = safeDiv(ONE_BD, price0, 18)
+  return { price0: Number(price0.getValue()), price1: Number(price1.getValue()) }
 }

@@ -8,22 +8,20 @@ export function getAmount0Delta(
   liquidity: bigint,
   roundUp: boolean,
 ): bigint {
-  if (sqrtRatioAX96 > sqrtRatioBX96) {
-    const temp = sqrtRatioAX96
-    sqrtRatioAX96 = sqrtRatioBX96
-    sqrtRatioBX96 = temp
+  // Use local variables for sorted ratios
+  const sqrtRatioLower = sqrtRatioAX96 < sqrtRatioBX96 ? sqrtRatioAX96 : sqrtRatioBX96
+  const sqrtRatioHigher = sqrtRatioAX96 < sqrtRatioBX96 ? sqrtRatioBX96 : sqrtRatioAX96
+
+  // amount0 = liquidity * Q96 * (sqrtB - sqrtA) / (sqrtB * sqrtA)
+  // Compute in one division to avoid intermediate rounding
+  const numerator = liquidity * BigInt(2) ** BigInt(96) * (sqrtRatioHigher - sqrtRatioLower) * ONE_BI
+  const denominator = sqrtRatioHigher * sqrtRatioLower
+
+  if (roundUp) {
+    // Ceiling division: (numerator + denominator - 1) / denominator
+    return (numerator + denominator - BigInt(1)) / denominator
   }
-
-  const numerator1 = liquidity << BigInt(96)
-  const numerator2 = sqrtRatioBX96 - sqrtRatioAX96
-
-  return roundUp
-    ? mulDivRoundingUp(
-        mulDivRoundingUp(numerator1, numerator2, sqrtRatioBX96),
-        ONE_BI,
-        sqrtRatioAX96,
-      )
-    : (numerator1 * numerator2) / sqrtRatioBX96 / sqrtRatioAX96
+  return numerator / denominator
 }
 
 export function getAmount1Delta(
