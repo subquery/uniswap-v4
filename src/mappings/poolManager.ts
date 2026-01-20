@@ -5,41 +5,23 @@ import { findNativePerToken, getNativePriceInUSD, sqrtPriceX96ToTokenPrices } fr
 import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, fetchTokenTotalSupply } from '../utils/token'
 import { NativeTokenDetails } from '../utils/nativeTokenDetails'
 import { StaticTokenDefinition } from '../utils/staticTokenDefinition'
+import { updatePoolDayData, updatePoolHourData } from '../utils/intervalUpdates'
+import { getConfig } from '../utils/config'
 
-// Simplified config for mainnet - can be expanded later
-const MAINNET_CONFIG = {
-  poolManagerAddress: '0x000000000004444c5dc75cB358380D2e3dE08A90',
-  whitelistTokens: [
-    '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
-    '0xA0b86a33E6817Fd2Dd1f44e1e71eeEe5E4bB4EE2',  // USDC
-    '0xdAC17F958D2ee523a2206206994597C13D831ec7',  // USDT
-  ],
-  tokenOverrides: [] as StaticTokenDefinition[],
-  poolsToSkip: [] as string[],
-  stablecoinWrappedNativePoolId: '',
-  stablecoinIsToken0: true,
-  wrappedNativeAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-  stablecoinAddresses: ['0xA0b86a33E6817Fd2Dd1f44e1e71eeEe5E4bB4EE2'],
-  minimumNativeLocked: 0,
-  nativeTokenDetails: {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    decimals: BigInt(18)
-  } as NativeTokenDetails
-}
+// Get the configuration for the current chain
+const CONFIG = getConfig()
 
 export async function handleInitialize(log: InitializeLog): Promise<void> {
   if (!log.args) throw new Error('Log args are undefined')
 
-  const config = MAINNET_CONFIG
-  const poolManagerAddress = config.poolManagerAddress.toLowerCase()
-  const whitelistTokens = config.whitelistTokens
-  const tokenOverrides = config.tokenOverrides
-  const poolsToSkip = config.poolsToSkip
-  const wrappedNativeAddress = config.wrappedNativeAddress
-  const stablecoinAddresses = config.stablecoinAddresses
-  const minimumNativeLocked = config.minimumNativeLocked
-  const nativeTokenDetails = config.nativeTokenDetails
+  const poolManagerAddress = CONFIG.poolManagerAddress.toLowerCase()
+  const whitelistTokens = CONFIG.whitelistTokens
+  const tokenOverrides = CONFIG.tokenOverrides
+  const poolsToSkip = CONFIG.poolsToSkip
+  const wrappedNativeAddress = CONFIG.wrappedNativeAddress
+  const stablecoinAddresses = CONFIG.stablecoinAddresses
+  const minimumNativeLocked = CONFIG.minimumNativeLocked
+  const nativeTokenDetails = CONFIG.nativeTokenDetails
 
   const poolId = log.args.id.toLowerCase()
 
@@ -53,15 +35,15 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
     poolManager = PoolManager.create({
       id: poolManagerAddress,
       poolCount: ZERO_BI,
-      totalVolumeETH: ZERO_BD,
-      totalVolumeUSD: ZERO_BD,
-      untrackedVolumeUSD: ZERO_BD,
-      totalFeesUSD: ZERO_BD,
-      totalFeesETH: ZERO_BD,
-      totalValueLockedETH: ZERO_BD,
-      totalValueLockedUSD: ZERO_BD,
-      totalValueLockedUSDUntracked: ZERO_BD,
-      totalValueLockedETHUntracked: ZERO_BD,
+      totalVolumeETH: 0,
+      totalVolumeUSD: 0,
+      untrackedVolumeUSD: 0,
+      totalFeesUSD: 0,
+      totalFeesETH: 0,
+      totalValueLockedETH: 0,
+      totalValueLockedUSD: 0,
+      totalValueLockedUSDUntracked: 0,
+      totalValueLockedETHUntracked: 0,
       txCount: ZERO_BI,
       owner: ADDRESS_ZERO
     })
@@ -69,7 +51,7 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
     // Create new bundle for tracking eth price
     const bundle = Bundle.create({
       id: '1',
-      ethPriceUSD: ZERO_BD
+      ethPriceUSD: 0
     })
     await bundle.save()
   }
@@ -109,14 +91,14 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
           name,
           totalSupply,
           decimals,
-          derivedETH: ZERO_BD,
-          volume: ZERO_BD,
-          volumeUSD: ZERO_BD,
-          feesUSD: ZERO_BD,
-          untrackedVolumeUSD: ZERO_BD,
-          totalValueLocked: ZERO_BD,
-          totalValueLockedUSD: ZERO_BD,
-          totalValueLockedUSDUntracked: ZERO_BD,
+          derivedETH: 0,
+          volume: 0,
+          volumeUSD: 0,
+          feesUSD: 0,
+          untrackedVolumeUSD: 0,
+          totalValueLocked: 0,
+          totalValueLockedUSD: 0,
+          totalValueLockedUSDUntracked: 0,
           txCount: ZERO_BI,
           poolCount: ZERO_BI
         })
@@ -145,14 +127,14 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
           name,
           totalSupply,
           decimals,
-          derivedETH: ZERO_BD,
-          volume: ZERO_BD,
-          volumeUSD: ZERO_BD,
-          feesUSD: ZERO_BD,
-          untrackedVolumeUSD: ZERO_BD,
-          totalValueLocked: ZERO_BD,
-          totalValueLockedUSD: ZERO_BD,
-          totalValueLockedUSDUntracked: ZERO_BD,
+          derivedETH: 0,
+          volume: 0,
+          volumeUSD: 0,
+          feesUSD: 0,
+          untrackedVolumeUSD: 0,
+          totalValueLocked: 0,
+          totalValueLockedUSD: 0,
+          totalValueLockedUSDUntracked: 0,
           txCount: ZERO_BI,
           poolCount: ZERO_BI
         })
@@ -183,23 +165,23 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
     tickSpacing: BigInt(log.args.tickSpacing),
     liquidity: ZERO_BI,
     sqrtPrice: BigInt(log.args.sqrtPriceX96.toString()),
-    token0Price: ZERO_BD,
-    token1Price: ZERO_BD,
+    token0Price: 0,
+    token1Price: 0,
     tick: BigInt(log.args.tick),
     observationIndex: ZERO_BI,
-    volumeToken0: ZERO_BD,
-    volumeToken1: ZERO_BD,
-    volumeUSD: ZERO_BD,
-    untrackedVolumeUSD: ZERO_BD,
-    feesUSD: ZERO_BD,
-    collectedFeesToken0: ZERO_BD,
-    collectedFeesToken1: ZERO_BD,
-    collectedFeesUSD: ZERO_BD,
-    totalValueLockedToken0: ZERO_BD,
-    totalValueLockedToken1: ZERO_BD,
-    totalValueLockedETH: ZERO_BD,
-    totalValueLockedUSD: ZERO_BD,
-    totalValueLockedUSDUntracked: ZERO_BD,
+    volumeToken0: 0,
+    volumeToken1: 0,
+    volumeUSD: 0,
+    untrackedVolumeUSD: 0,
+    feesUSD: 0,
+    collectedFeesToken0: 0,
+    collectedFeesToken1: 0,
+    collectedFeesUSD: 0,
+    totalValueLockedToken0: 0,
+    totalValueLockedToken1: 0,
+    totalValueLockedETH: 0,
+    totalValueLockedUSD: 0,
+    totalValueLockedUSDUntracked: 0,
     liquidityProviderCount: ZERO_BI,
     txCount: ZERO_BI,
     hooks: log.args.hooks.toLowerCase()
@@ -219,9 +201,38 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
   token0.poolCount = token0.poolCount + ONE_BI
   token1.poolCount = token1.poolCount + ONE_BI
 
+  // Update whitelisted pools for USD pricing
+  // Note: The schema uses string IDs, not entity references, so we track the pool IDs separately
+  // The whitelist is used for determining which tokens to use for tracked volume calculations
+
   // Save all entities
   await pool.save()
   await token0.save()
   await token1.save()
   await poolManager.save()
+
+  // update prices
+  // update ETH price now that prices could have changed
+  const bundle = await Bundle.get('1')
+  if (bundle) {
+    bundle.ethPriceUSD = await getNativePriceInUSD(CONFIG.stablecoinWrappedNativePoolId, CONFIG.stablecoinIsToken0)
+    await bundle.save()
+  }
+
+  // Update interval data for the new pool
+  await updatePoolDayData(poolId, log)
+  await updatePoolHourData(poolId, log)
+
+  // Recalculate derivedETH after price updates
+  if (token0.id !== wrappedNativeAddress && token0.id !== ADDRESS_ZERO) {
+    const derivedETH = await findNativePerToken(token0, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
+    token0.derivedETH = derivedETH
+  }
+  if (token1.id !== wrappedNativeAddress && token1.id !== ADDRESS_ZERO) {
+    const derivedETH = await findNativePerToken(token1, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
+    token1.derivedETH = derivedETH
+  }
+
+  await token0.save()
+  await token1.save()
 }

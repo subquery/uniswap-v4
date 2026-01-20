@@ -1,0 +1,42 @@
+import { ONE_BI, Q96 } from '../constants'
+import { mulDivRoundingUp } from './fullMath'
+
+// https://github.com/Uniswap/sdks/blob/30b98e09d0486cd5cc3e4360e3277eb7cb60d2d5/sdks/v3-sdk/src/utils/sqrtPriceMath.ts#L25
+export function getAmount0Delta(
+  sqrtRatioAX96: bigint,
+  sqrtRatioBX96: bigint,
+  liquidity: bigint,
+  roundUp: boolean,
+): bigint {
+  // Use local variables for sorted ratios
+  const sqrtRatioLower = sqrtRatioAX96 < sqrtRatioBX96 ? sqrtRatioAX96 : sqrtRatioBX96
+  const sqrtRatioHigher = sqrtRatioAX96 < sqrtRatioBX96 ? sqrtRatioBX96 : sqrtRatioAX96
+
+  // amount0 = liquidity * Q96 * (sqrtB - sqrtA) / (sqrtB * sqrtA)
+  // Compute in one division to avoid intermediate rounding
+  const numerator = liquidity * BigInt(2) ** BigInt(96) * (sqrtRatioHigher - sqrtRatioLower) * ONE_BI
+  const denominator = sqrtRatioHigher * sqrtRatioLower
+
+  if (roundUp) {
+    // Ceiling division: (numerator + denominator - 1) / denominator
+    return (numerator + denominator - BigInt(1)) / denominator
+  }
+  return numerator / denominator
+}
+
+export function getAmount1Delta(
+  sqrtRatioAX96: bigint,
+  sqrtRatioBX96: bigint,
+  liquidity: bigint,
+  roundUp: boolean,
+): bigint {
+  if (sqrtRatioAX96 > sqrtRatioBX96) {
+    const temp = sqrtRatioAX96
+    sqrtRatioAX96 = sqrtRatioBX96
+    sqrtRatioBX96 = temp
+  }
+
+  const difference = sqrtRatioBX96 - sqrtRatioAX96
+
+  return roundUp ? mulDivRoundingUp(liquidity, difference, Q96) : (liquidity * difference) / Q96
+}
