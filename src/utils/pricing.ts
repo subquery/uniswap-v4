@@ -110,3 +110,11 @@ export function calculateAmountUSD(
 ): number {
   return amount0 * token0DerivedETH * ethPriceUSD + amount1 * token1DerivedETH * ethPriceUSD
 }
+
+// Tick utility for creating tick entities
+export function calculateTickPrice(tickIdx: number): { price0: number; price1: number } {
+  // 1.0001^tick is token1/token0.
+  const price0 = Math.pow(1.0001, tickIdx)
+  const price1 = safeDiv(ONE_BD, new bigDecimal(price0), 18)
+  return { price0, price1: Number(price1.getValue()) }
+}

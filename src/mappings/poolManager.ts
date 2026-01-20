@@ -5,6 +5,7 @@ import { findNativePerToken, getNativePriceInUSD, sqrtPriceX96ToTokenPrices } fr
 import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, fetchTokenTotalSupply } from '../utils/token'
 import { NativeTokenDetails } from '../utils/nativeTokenDetails'
 import { StaticTokenDefinition } from '../utils/staticTokenDefinition'
+import { updatePoolDayData, updatePoolHourData } from '../utils/intervalUpdates'
 
 // Simplified config for mainnet - can be expanded later
 const MAINNET_CONFIG = {
@@ -219,9 +220,38 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
   token0.poolCount = token0.poolCount + ONE_BI
   token1.poolCount = token1.poolCount + ONE_BI
 
+  // Update whitelisted pools for USD pricing
+  // Note: The schema uses string IDs, not entity references, so we track the pool IDs separately
+  // The whitelist is used for determining which tokens to use for tracked volume calculations
+
   // Save all entities
   await pool.save()
   await token0.save()
   await token1.save()
   await poolManager.save()
+
+  // update prices
+  // update ETH price now that prices could have changed
+  const bundle = await Bundle.get('1')
+  if (bundle) {
+    bundle.ethPriceUSD = await getNativePriceInUSD(config.stablecoinWrappedNativePoolId, config.stablecoinIsToken0)
+    await bundle.save()
+  }
+
+  // Update interval data for the new pool
+  await updatePoolDayData(poolId, log)
+  await updatePoolHourData(poolId, log)
+
+  // Recalculate derivedETH after price updates
+  if (token0.id !== wrappedNativeAddress && token0.id !== ADDRESS_ZERO) {
+    const derivedETH = await findNativePerToken(token0, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
+    token0.derivedETH = derivedETH
+  }
+  if (token1.id !== wrappedNativeAddress && token1.id !== ADDRESS_ZERO) {
+    const derivedETH = await findNativePerToken(token1, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
+    token1.derivedETH = derivedETH
+  }
+
+  await token0.save()
+  await token1.save()
 }

@@ -3,6 +3,12 @@ import { Transaction } from '../types'
 import { ONE_BD, ONE_BI, ZERO_BD, ZERO_BI } from '../utils/constants'
 import bigDecimal from "js-big-decimal";
 
+// Export liquidity math utilities
+export * from './liquidityMath'
+
+// Export interval update utilities
+export * from './intervalUpdates'
+
 export function exponentToNumber(decimals: bigint): bigint {
   let result = BigInt(1);
   for (let i = ZERO_BI; i < decimals; i += ONE_BI) {
