@@ -10,7 +10,10 @@
     "dev": "subql codegen && subql build && docker-compose pull && docker-compose up --remove-orphans",
     "prepack": "rm -rf dist && npm run build",
     "test": "subql build && subql-node-ethereum test",
-    "build:develop": "NODE_ENV=develop subql codegen && NODE_ENV=develop subql build"
+    "build:develop": "NODE_ENV=develop subql codegen && NODE_ENV=develop subql build",
+    "generate-project": "ts-node scripts/generate-project.ts",
+    "deploy": "subql publish",
+    "deploy-all": "ts-node scripts/deploy-all.ts"
   },
   "homepage": "https://github.com/Uniswap/v4-subgraph",
   "repository": "https://github.com/Uniswap/v4-subgraph",
@@ -32,6 +35,7 @@
     "@subql/testing": "latest",
     "dotenv": "latest",
     "ethers": "^5.7.2",
+    "ts-node": "^10.9.2",
     "typescript": "latest"
   }
 }

@@ -58,3 +58,6 @@ Thumbs.db
 .yarn
 
 .DS_Store
+
+.project-cid
+.claude

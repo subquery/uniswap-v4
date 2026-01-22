@@ -38,12 +38,12 @@ services:
       - -f=/app
       - --db-schema=app
       # - --workers=4
-      - --batch-size=1000
+      - --batch-size=100
       - --unfinalized-blocks=true
       - --network-endpoint="https://eth.api.onfinality.io/rpc?apikey=b8b99961-e876-41dd-bd7d-0c143f3a3428"
-      - --network-dictionary="http://host.docker.internal:8080/ethereum-mainnet"
+      # - --network-dictionary="http://host.docker.internal:8080/ethereum-mainnet"
       # - --debug="dictionary-v2"
-      - --dictionary-registry=false
+      # dictionary-registry 默认启用，无需显式指定
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://subquery-node:3000/ready"]
       interval: 3s

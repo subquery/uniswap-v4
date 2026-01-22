@@ -1,0 +1,145 @@
+{
+  "lastUpdated": "2026-01-22T15:50:47.167Z",
+  "networks": [
+    {
+      "network": "mainnet",
+      "status": "success",
+      "cid": "QmfQXuNBS4P1WtN8rYh81dqX6BKcxJZUGKPkGEPXYo5aa2",
+      "deployedAt": "2026-01-22T15:47:08.498Z",
+      "lastAttempt": "2026-01-22T15:47:08.498Z"
+    },
+    {
+      "network": "sepolia",
+      "status": "success",
+      "cid": "QmQqXCbS1HZZVwagBMHmxGqpAiB3ue8WPG81AsJg3kDFNi",
+      "deployedAt": "2026-01-22T15:47:24.762Z",
+      "lastAttempt": "2026-01-22T15:47:24.762Z"
+    },
+    {
+      "network": "arbitrum-one",
+      "status": "success",
+      "cid": "QmWnAhzNsVeY8R1aZN8j9by53wZNDZyq2YMStvWqFQPRqT",
+      "deployedAt": "2026-01-22T15:47:33.962Z",
+      "lastAttempt": "2026-01-22T15:47:33.962Z"
+    },
+    {
+      "network": "arbitrum-sepolia",
+      "status": "success",
+      "cid": "QmSFbNjmgUyZGDiDNqmWNoLYKTpBHo4kr5Sc8GQknr94eE",
+      "deployedAt": "2026-01-22T15:47:51.046Z",
+      "lastAttempt": "2026-01-22T15:47:51.046Z"
+    },
+    {
+      "network": "base",
+      "status": "success",
+      "cid": "QmcawAJHqAtpjWwCq7ByP43ChvxZP1btzaUEAjFkpYKaZA",
+      "deployedAt": "2026-01-22T15:48:00.908Z",
+      "lastAttempt": "2026-01-22T15:48:00.908Z"
+    },
+    {
+      "network": "base-sepolia",
+      "status": "success",
+      "cid": "QmZhsvfets5sVsq6pYtvKmUEXsHqUYS5Cx1WCWtbFZJ5mi",
+      "deployedAt": "2026-01-22T15:48:12.756Z",
+      "lastAttempt": "2026-01-22T15:48:12.756Z"
+    },
+    {
+      "network": "matic",
+      "status": "success",
+      "cid": "QmZpUiqzcjMU1j4LJL44KNxZHue5Sd6AWrqp6VvJjJbG8o",
+      "deployedAt": "2026-01-22T15:48:21.677Z",
+      "lastAttempt": "2026-01-22T15:48:21.677Z"
+    },
+    {
+      "network": "bsc",
+      "status": "success",
+      "cid": "QmbWcoiD7NorXeVKoEh4jED6hHSFGJKzAHqQAw5Jhasg5a",
+      "deployedAt": "2026-01-22T15:48:31.738Z",
+      "lastAttempt": "2026-01-22T15:48:31.738Z"
+    },
+    {
+      "network": "optimism",
+      "status": "success",
+      "cid": "QmZA6TW5qALjcaB9HgeDdYkmzxVNMhjzHQhG1s5NY1N7L2",
+      "deployedAt": "2026-01-22T15:48:40.628Z",
+      "lastAttempt": "2026-01-22T15:48:40.628Z"
+    },
+    {
+      "network": "avalanche",
+      "status": "success",
+      "cid": "QmVAN4HBdwEdMxj1Bx1w1pdDqNEAwkrDwnAMjB4at33n3U",
+      "deployedAt": "2026-01-22T15:48:50.453Z",
+      "lastAttempt": "2026-01-22T15:48:50.453Z"
+    },
+    {
+      "network": "worldchain-mainnet",
+      "status": "success",
+      "cid": "Qmf7J1xB97ddiMsJFGyxTy2LFCrH7UpYMBLCDL9SNHpkRn",
+      "deployedAt": "2026-01-22T15:49:03.511Z",
+      "lastAttempt": "2026-01-22T15:49:03.511Z"
+    },
+    {
+      "network": "zora-mainnet",
+      "status": "success",
+      "cid": "QmZtJ7te1QazTZ4W6V12yj3UNTKXmf19A1KbYb3L383aXd",
+      "deployedAt": "2026-01-22T15:49:15.348Z",
+      "lastAttempt": "2026-01-22T15:49:15.348Z"
+    },
+    {
+      "network": "blast-mainnet",
+      "status": "success",
+      "cid": "QmYG58uPJStsHQDTCbPZ6pAYMEKXtZNmf2oKP5jMyxaZxV",
+      "deployedAt": "2026-01-22T15:49:26.439Z",
+      "lastAttempt": "2026-01-22T15:49:26.439Z"
+    },
+    {
+      "network": "unichain",
+      "status": "success",
+      "cid": "QmcmDVmi9W22YVto3G52WpN8csfM9ooT7TkQNnrSvpmg1j",
+      "deployedAt": "2026-01-22T15:49:35.394Z",
+      "lastAttempt": "2026-01-22T15:49:35.394Z"
+    },
+    {
+      "network": "unichain-sepolia",
+      "status": "success",
+      "cid": "Qme561oYYnxv2BibKu2abwmmzwLpmQwo5Z9QXhi1NPMmWA",
+      "deployedAt": "2026-01-22T15:49:47.773Z",
+      "lastAttempt": "2026-01-22T15:49:47.773Z"
+    },
+    {
+      "network": "soneium-mainnet",
+      "status": "success",
+      "cid": "QmUymNcyGdZtyvcxQJFosaLtyQTZynoMBjwYRcriCzeMi4",
+      "deployedAt": "2026-01-22T15:49:57.123Z",
+      "lastAttempt": "2026-01-22T15:49:57.123Z"
+    },
+    {
+      "network": "celo",
+      "status": "success",
+      "cid": "QmUsUhLuYTQN2AcWiiAUvq8rqpFJ5G4VLctQQ7HTCsMZJD",
+      "deployedAt": "2026-01-22T15:50:06.639Z",
+      "lastAttempt": "2026-01-22T15:50:06.639Z"
+    },
+    {
+      "network": "monad",
+      "status": "success",
+      "cid": "QmRA75te4GyC4qoBtged9PNzt8aHZCnK6zLF6JeG6RcdSq",
+      "deployedAt": "2026-01-22T15:50:15.292Z",
+      "lastAttempt": "2026-01-22T15:50:15.292Z"
+    },
+    {
+      "network": "xlayer-mainnet",
+      "status": "success",
+      "cid": "QmQYfAbjVdmFYpS64f8eUciL8EvdjGEHwVCT3persRQASb",
+      "deployedAt": "2026-01-22T15:50:23.910Z",
+      "lastAttempt": "2026-01-22T15:50:23.910Z"
+    },
+    {
+      "network": "megaeth-mainnet",
+      "status": "success",
+      "cid": "QmcNQzVYcKfqLJGeZzz7yeRLXExKZit5oG1imruXN3iVHj",
+      "deployedAt": "2026-01-22T15:50:35.900Z",
+      "lastAttempt": "2026-01-22T15:50:35.900Z"
+    }
+  ]
+}
