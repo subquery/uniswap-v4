@@ -241,7 +241,7 @@
   },
   "megaeth-mainnet": {
     "chainId": "648",
-    "endpoint": "https://rpc.megaeth.com",
+    "endpoint": "https://mainnet.megaeth.com/rpc",
     "PoolManager": {
       "address": "0x58dd83c317b03e6ebd72c3e912adf60a8e97aa95",
       "startBlock": 3637446
