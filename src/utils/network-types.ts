@@ -1,0 +1,23 @@
+// Network name constants for type safety
+export enum NetworkName {
+  MAINNET = 'mainnet',
+  SEPOLIA = 'sepolia',
+  ARBITRUM_ONE = 'arbitrum-one',
+  ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
+  BASE = 'base',
+  BASE_SEPOLIA = 'base-sepolia',
+  POLYGON = 'matic',
+  BSC = 'bsc',
+  OPTIMISM = 'optimism',
+  AVALANCHE = 'avalanche',
+  WORLDCHAIN = 'worldchain-mainnet',
+  ZORA = 'zora-mainnet',
+  BLAST = 'blast-mainnet',
+  UNICHAIN = 'unichain',
+  UNICHAIN_SEPOLIA = 'unichain-sepolia',
+  SONEIUM = 'soneium-mainnet',
+  CELO = 'celo',
+  MONAD = 'monad',
+  XLAYER = 'xlayer-mainnet',
+  MEGAETH = 'megaeth-mainnet',
+}
