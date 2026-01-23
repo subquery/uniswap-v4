@@ -180,7 +180,7 @@
     }
   },
   "unichain-sepolia": {
-    "chainId": "1115",
+    "chainId": "1301",
     "endpoint": "https://sepolia.unichain.org",
     "PoolManager": {
       "address": "0x00b036b58a818b1bc34d502d3fe730db729e62ac",
@@ -192,7 +192,7 @@
     }
   },
   "soneium-mainnet": {
-    "chainId": "50894",
+    "chainId": "1868",
     "endpoint": "https://rpc.soneium.org",
     "PoolManager": {
       "address": "0x360e68faccca8ca495c1b759fd9eee466db9fb32",
@@ -216,7 +216,7 @@
     }
   },
   "monad": {
-    "chainId": "4312",
+    "chainId": "143",
     "endpoint": "https://rpc.monad.xyz",
     "PoolManager": {
       "address": "0x188d586Ddcf52439676Ca21A244753fA19F9Ea8e",
@@ -240,7 +240,7 @@
     }
   },
   "megaeth-mainnet": {
-    "chainId": "648",
+    "chainId": "4326",
     "endpoint": "https://mainnet.megaeth.com/rpc",
     "PoolManager": {
       "address": "0x58dd83c317b03e6ebd72c3e912adf60a8e97aa95",

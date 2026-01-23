@@ -22,12 +22,12 @@ const CHAIN_ID_TO_NETWORK: Record<string, NetworkName> = {
   '7777777': NetworkName.ZORA,
   '81457': NetworkName.BLAST,
   '130': NetworkName.UNICHAIN,
-  '1115': NetworkName.UNICHAIN_SEPOLIA,
-  '50894': NetworkName.SONEIUM,
+  '1301': NetworkName.UNICHAIN_SEPOLIA,
+  '1868': NetworkName.SONEIUM,
   '42220': NetworkName.CELO,
-  '4312': NetworkName.MONAD,
+  '143': NetworkName.MONAD,
   '196': NetworkName.XLAYER,
-  '648': NetworkName.MEGAETH,
+  '4326': NetworkName.MEGAETH,
 }
 
 // Configuration interface for SubQuery
