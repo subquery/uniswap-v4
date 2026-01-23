@@ -1,5 +1,6 @@
 import { NativeTokenDetails } from './nativeTokenDetails'
 import { StaticTokenDefinition } from './staticTokenDefinition'
+import { RUNTIME_NETWORK, RUNTIME_CHAIN_ID } from './runtime-config'
 
 // Network name constants for type safety
 export enum NetworkName {
@@ -451,6 +452,9 @@ const MEGAETH_CONFIG = createPlaceholderConfig(
   'Ethereum'
 )
 
+// Module-level flag to ensure we only log config once
+let configLogged = false
+
 // Mapping of network to config
 const NETWORK_CONFIGS: Record<NetworkName, SubqueryConfig> = {
   [NetworkName.MAINNET]: MAINNET_CONFIG,
@@ -480,24 +484,40 @@ const NETWORK_CONFIGS: Record<NetworkName, SubqueryConfig> = {
  * In SubQuery, the chain ID is specified in project.yaml under network.chainId
  *
  * For development/testing, you can pass a specific chainId or network name.
- * Otherwise, it defaults to mainnet.
+ * Otherwise, it uses the runtime configuration from the auto-generated runtime-config.ts.
  */
 export function getConfig(chainId?: string, network?: NetworkName): SubqueryConfig {
+  let selectedConfig: SubqueryConfig
+  let selectedNetworkName: NetworkName
+
   // If network is explicitly provided, use it
   if (network && NETWORK_CONFIGS[network]) {
-    return NETWORK_CONFIGS[network]
+    selectedConfig = NETWORK_CONFIGS[network]
+    selectedNetworkName = network
   }
-
   // If chainId is provided, map to network
-  if (chainId && CHAIN_ID_TO_NETWORK[chainId]) {
-    const networkName = CHAIN_ID_TO_NETWORK[chainId]
-    if (NETWORK_CONFIGS[networkName]) {
-      return NETWORK_CONFIGS[networkName]
-    }
+  else if (chainId && CHAIN_ID_TO_NETWORK[chainId]) {
+    selectedNetworkName = CHAIN_ID_TO_NETWORK[chainId]
+    selectedConfig = NETWORK_CONFIGS[selectedNetworkName]
+  }
+  // Use runtime configuration (from auto-generated file)
+  else if (RUNTIME_NETWORK && NETWORK_CONFIGS[RUNTIME_NETWORK]) {
+    selectedConfig = NETWORK_CONFIGS[RUNTIME_NETWORK]
+    selectedNetworkName = RUNTIME_NETWORK
+  }
+  // Fallback to mainnet (should never reach here in production)
+  else {
+    selectedConfig = NETWORK_CONFIGS[NetworkName.MAINNET]
+    selectedNetworkName = NetworkName.MAINNET
   }
 
-  // Default to mainnet
-  return NETWORK_CONFIGS[NetworkName.MAINNET]
+  // Log which configuration is being used (only on first call)
+  if (!configLogged) {
+    logger.info(`Using SubQuery configuration for network: ${selectedNetworkName} (chainId: ${RUNTIME_CHAIN_ID})`)
+    configLogged = true
+  }
+
+  return selectedConfig
 }
 
 // Export default config (mainnet) for convenience

@@ -1,145 +1,145 @@
 {
-  "lastUpdated": "2026-01-22T15:50:47.167Z",
+  "lastUpdated": "2026-01-23T08:46:07.311Z",
   "networks": [
-    {
-      "network": "mainnet",
-      "status": "success",
-      "cid": "QmfQXuNBS4P1WtN8rYh81dqX6BKcxJZUGKPkGEPXYo5aa2",
-      "deployedAt": "2026-01-22T15:47:08.498Z",
-      "lastAttempt": "2026-01-22T15:47:08.498Z"
-    },
     {
       "network": "sepolia",
       "status": "success",
-      "cid": "QmQqXCbS1HZZVwagBMHmxGqpAiB3ue8WPG81AsJg3kDFNi",
-      "deployedAt": "2026-01-22T15:47:24.762Z",
-      "lastAttempt": "2026-01-22T15:47:24.762Z"
+      "cid": "QmT4v2PqtBqa1Fhat55Gpi4hTmA8jU7Po6GAxPMxjs3m2J",
+      "deployedAt": "2026-01-23T08:42:44.201Z",
+      "lastAttempt": "2026-01-23T08:42:44.201Z"
     },
     {
       "network": "arbitrum-one",
       "status": "success",
-      "cid": "QmWnAhzNsVeY8R1aZN8j9by53wZNDZyq2YMStvWqFQPRqT",
-      "deployedAt": "2026-01-22T15:47:33.962Z",
-      "lastAttempt": "2026-01-22T15:47:33.962Z"
+      "cid": "QmcczwMH5D92ueqrLgwCf73gBqBRubzccsswi3ps7YJcAS",
+      "deployedAt": "2026-01-23T08:42:53.620Z",
+      "lastAttempt": "2026-01-23T08:42:53.620Z"
     },
     {
       "network": "arbitrum-sepolia",
       "status": "success",
-      "cid": "QmSFbNjmgUyZGDiDNqmWNoLYKTpBHo4kr5Sc8GQknr94eE",
-      "deployedAt": "2026-01-22T15:47:51.046Z",
-      "lastAttempt": "2026-01-22T15:47:51.046Z"
+      "cid": "QmWBAmwpqnoNbr2v1VuP32Ab4K8DpHzYhuU5yHDT1v3amA",
+      "deployedAt": "2026-01-23T08:43:03.554Z",
+      "lastAttempt": "2026-01-23T08:43:03.554Z"
     },
     {
       "network": "base",
       "status": "success",
-      "cid": "QmcawAJHqAtpjWwCq7ByP43ChvxZP1btzaUEAjFkpYKaZA",
-      "deployedAt": "2026-01-22T15:48:00.908Z",
-      "lastAttempt": "2026-01-22T15:48:00.908Z"
+      "cid": "QmP5UxDEHA6dv69FbZcKwLuu8y2Eyki1S1r7EPLjvWdZCf",
+      "deployedAt": "2026-01-23T08:43:14.824Z",
+      "lastAttempt": "2026-01-23T08:43:14.824Z"
     },
     {
       "network": "base-sepolia",
       "status": "success",
-      "cid": "QmZhsvfets5sVsq6pYtvKmUEXsHqUYS5Cx1WCWtbFZJ5mi",
-      "deployedAt": "2026-01-22T15:48:12.756Z",
-      "lastAttempt": "2026-01-22T15:48:12.756Z"
+      "cid": "QmXB63rCqELQumzA8V5EHWJ79dDvfp5W566uXQ2Ba1gega",
+      "deployedAt": "2026-01-23T08:43:27.178Z",
+      "lastAttempt": "2026-01-23T08:43:27.178Z"
     },
     {
       "network": "matic",
       "status": "success",
-      "cid": "QmZpUiqzcjMU1j4LJL44KNxZHue5Sd6AWrqp6VvJjJbG8o",
-      "deployedAt": "2026-01-22T15:48:21.677Z",
-      "lastAttempt": "2026-01-22T15:48:21.677Z"
+      "cid": "QmRXFerEQPbWEgYwrD7CdY4n7QP98r552VAUxWABQqUUWz",
+      "deployedAt": "2026-01-23T08:43:37.676Z",
+      "lastAttempt": "2026-01-23T08:43:37.676Z"
     },
     {
       "network": "bsc",
       "status": "success",
-      "cid": "QmbWcoiD7NorXeVKoEh4jED6hHSFGJKzAHqQAw5Jhasg5a",
-      "deployedAt": "2026-01-22T15:48:31.738Z",
-      "lastAttempt": "2026-01-22T15:48:31.738Z"
+      "cid": "QmXj9S35jWBzqgqgJyPvpKYbRHUdBRwh56Wkb19NJQvajU",
+      "deployedAt": "2026-01-23T08:43:47.627Z",
+      "lastAttempt": "2026-01-23T08:43:47.627Z"
     },
     {
       "network": "optimism",
       "status": "success",
-      "cid": "QmZA6TW5qALjcaB9HgeDdYkmzxVNMhjzHQhG1s5NY1N7L2",
-      "deployedAt": "2026-01-22T15:48:40.628Z",
-      "lastAttempt": "2026-01-22T15:48:40.628Z"
+      "cid": "QmS7N9QLEdzjAymiP6t2kxuHAcGrx46ZnrPyDC3LNPQNM6",
+      "deployedAt": "2026-01-23T08:43:56.537Z",
+      "lastAttempt": "2026-01-23T08:43:56.537Z"
     },
     {
       "network": "avalanche",
       "status": "success",
-      "cid": "QmVAN4HBdwEdMxj1Bx1w1pdDqNEAwkrDwnAMjB4at33n3U",
-      "deployedAt": "2026-01-22T15:48:50.453Z",
-      "lastAttempt": "2026-01-22T15:48:50.453Z"
+      "cid": "Qmf8hHaaB9RvBKNPRveDQjbBAiWBNtTXjLrsycGed4Ca37",
+      "deployedAt": "2026-01-23T08:44:06.139Z",
+      "lastAttempt": "2026-01-23T08:44:06.139Z"
     },
     {
       "network": "worldchain-mainnet",
       "status": "success",
-      "cid": "Qmf7J1xB97ddiMsJFGyxTy2LFCrH7UpYMBLCDL9SNHpkRn",
-      "deployedAt": "2026-01-22T15:49:03.511Z",
-      "lastAttempt": "2026-01-22T15:49:03.511Z"
+      "cid": "QmPhA4nc1Zqn3RQUpenQRnk87mHQZ2a1N2ZcJiDMFpTFaT",
+      "deployedAt": "2026-01-23T08:44:17.768Z",
+      "lastAttempt": "2026-01-23T08:44:17.768Z"
     },
     {
       "network": "zora-mainnet",
       "status": "success",
-      "cid": "QmZtJ7te1QazTZ4W6V12yj3UNTKXmf19A1KbYb3L383aXd",
-      "deployedAt": "2026-01-22T15:49:15.348Z",
-      "lastAttempt": "2026-01-22T15:49:15.348Z"
+      "cid": "Qmf4RwRjfCmsHHkPGtS7UFoEfM59ymc795smTX2u2otqQ2",
+      "deployedAt": "2026-01-23T08:44:27.692Z",
+      "lastAttempt": "2026-01-23T08:44:27.692Z"
     },
     {
       "network": "blast-mainnet",
       "status": "success",
-      "cid": "QmYG58uPJStsHQDTCbPZ6pAYMEKXtZNmf2oKP5jMyxaZxV",
-      "deployedAt": "2026-01-22T15:49:26.439Z",
-      "lastAttempt": "2026-01-22T15:49:26.439Z"
+      "cid": "QmRdqUN5UKSGFpz84w7g22dae8MywzzZb9sqPvVSXsupST",
+      "deployedAt": "2026-01-23T08:44:37.978Z",
+      "lastAttempt": "2026-01-23T08:44:37.978Z"
     },
     {
       "network": "unichain",
       "status": "success",
-      "cid": "QmcmDVmi9W22YVto3G52WpN8csfM9ooT7TkQNnrSvpmg1j",
-      "deployedAt": "2026-01-22T15:49:35.394Z",
-      "lastAttempt": "2026-01-22T15:49:35.394Z"
+      "cid": "QmbNwi8aBpeFQPAADWG68QgQMyEbdy8sdG5r4FDn1M5z77",
+      "deployedAt": "2026-01-23T08:44:48.514Z",
+      "lastAttempt": "2026-01-23T08:44:48.514Z"
     },
     {
       "network": "unichain-sepolia",
       "status": "success",
-      "cid": "Qme561oYYnxv2BibKu2abwmmzwLpmQwo5Z9QXhi1NPMmWA",
-      "deployedAt": "2026-01-22T15:49:47.773Z",
-      "lastAttempt": "2026-01-22T15:49:47.773Z"
+      "cid": "QmepH9E5dsNsqXiX2mQrDvamXST17D9kpXWtdpgBhit65K",
+      "deployedAt": "2026-01-23T08:44:57.678Z",
+      "lastAttempt": "2026-01-23T08:44:57.678Z"
     },
     {
       "network": "soneium-mainnet",
       "status": "success",
-      "cid": "QmUymNcyGdZtyvcxQJFosaLtyQTZynoMBjwYRcriCzeMi4",
-      "deployedAt": "2026-01-22T15:49:57.123Z",
-      "lastAttempt": "2026-01-22T15:49:57.123Z"
+      "cid": "QmYJCcsZcVfSFcK8yMKybiTZ5K26Gfxfxqkkx9BdtAHvMh",
+      "deployedAt": "2026-01-23T08:45:06.776Z",
+      "lastAttempt": "2026-01-23T08:45:06.776Z"
     },
     {
       "network": "celo",
       "status": "success",
-      "cid": "QmUsUhLuYTQN2AcWiiAUvq8rqpFJ5G4VLctQQ7HTCsMZJD",
-      "deployedAt": "2026-01-22T15:50:06.639Z",
-      "lastAttempt": "2026-01-22T15:50:06.639Z"
+      "cid": "QmYXfh9LPcoVT5MJTFdskV5yDEPWQ1nykLev1EitDApFRB",
+      "deployedAt": "2026-01-23T08:45:18.326Z",
+      "lastAttempt": "2026-01-23T08:45:18.326Z"
     },
     {
       "network": "monad",
       "status": "success",
-      "cid": "QmRA75te4GyC4qoBtged9PNzt8aHZCnK6zLF6JeG6RcdSq",
-      "deployedAt": "2026-01-22T15:50:15.292Z",
-      "lastAttempt": "2026-01-22T15:50:15.292Z"
+      "cid": "QmfFQXbH7daPAVSKeR7EV4dWfBdYeL5ULCLfwpBDLPeK6M",
+      "deployedAt": "2026-01-23T08:45:27.438Z",
+      "lastAttempt": "2026-01-23T08:45:27.438Z"
     },
     {
       "network": "xlayer-mainnet",
       "status": "success",
-      "cid": "QmQYfAbjVdmFYpS64f8eUciL8EvdjGEHwVCT3persRQASb",
-      "deployedAt": "2026-01-22T15:50:23.910Z",
-      "lastAttempt": "2026-01-22T15:50:23.910Z"
+      "cid": "QmZedRhkwKzeTjj4Km4cCu89py2wQpLknpog4R4XS28BtX",
+      "deployedAt": "2026-01-23T08:45:37.338Z",
+      "lastAttempt": "2026-01-23T08:45:37.338Z"
     },
     {
       "network": "megaeth-mainnet",
       "status": "success",
-      "cid": "QmcNQzVYcKfqLJGeZzz7yeRLXExKZit5oG1imruXN3iVHj",
-      "deployedAt": "2026-01-22T15:50:35.900Z",
-      "lastAttempt": "2026-01-22T15:50:35.900Z"
+      "cid": "QmXPmruFDNzmqySrk2qqaJ9hmzD3aUrvH5WKQ8ZBAqPXGH",
+      "deployedAt": "2026-01-23T08:45:46.617Z",
+      "lastAttempt": "2026-01-23T08:45:46.617Z"
+    },
+    {
+      "network": "mainnet",
+      "status": "success",
+      "cid": "QmYFvoYso3ZLLuA3SiwsVAPocKnnedpv1te73P1ezko6Hu",
+      "deployedAt": "2026-01-23T08:45:56.390Z",
+      "lastAttempt": "2026-01-23T08:45:56.390Z"
     }
   ]
 }

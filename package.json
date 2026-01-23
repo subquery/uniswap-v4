@@ -13,6 +13,7 @@
     "build:develop": "NODE_ENV=develop subql codegen && NODE_ENV=develop subql build",
     "generate-project": "ts-node scripts/generate-project.ts",
     "deploy": "subql publish",
+    "deploy-rm": "rm ./deploy-status.json",
     "deploy-all": "ts-node scripts/deploy-all.ts"
   },
   "homepage": "https://github.com/Uniswap/v4-subgraph",

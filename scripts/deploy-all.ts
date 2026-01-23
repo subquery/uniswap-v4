@@ -206,6 +206,19 @@ async function main() {
     console.log(`\nNetworks to deploy (pending/failed): ${networksToDeploy.length}`)
   }
 
+  // Sort networks: deploy mainnet last so it remains as the final configuration
+  if (networksToDeploy.length > 1) {
+    networksToDeploy.sort((a, b) => {
+      if (a === 'mainnet') return 1
+      if (b === 'mainnet') return -1
+      return 0
+    })
+
+    if (networksToDeploy.includes('mainnet')) {
+      console.log(`\nNote: mainnet will be deployed last to keep it as final configuration`)
+    }
+  }
+
   if (networksToDeploy.length === 0) {
     console.log('\nAll networks already deployed successfully!')
     console.log('Use --all to force redeploy all networks')
