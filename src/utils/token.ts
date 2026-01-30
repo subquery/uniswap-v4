@@ -38,8 +38,8 @@ async function withTimeout<T>(
   }
 }
 
-// Timeout for RPC calls (20 seconds - allows for slower RPC nodes)
-const RPC_TIMEOUT_MS = 20000
+// Timeout for RPC calls (60 seconds - allows for slower RPC nodes)
+const RPC_TIMEOUT_MS = 60000
 
 export async function fetchTokenSymbol(
   tokenAddress: string,
