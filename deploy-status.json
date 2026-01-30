@@ -1,145 +1,145 @@
 {
-  "lastUpdated": "2026-01-23T14:02:57.075Z",
+  "lastUpdated": "2026-01-30T08:40:40.021Z",
   "networks": [
     {
       "network": "sepolia",
       "status": "success",
-      "cid": "QmefssDEW2FEc8cngLRTTP5FHFS4Fyd1CpHgCmvxCMixGX",
-      "deployedAt": "2026-01-23T13:51:04.960Z",
-      "lastAttempt": "2026-01-23T13:51:04.960Z"
+      "cid": "QmNvuW6EcHj8Ud7UtCbjebGKjjAwSEEH7Z8JFkFqVimZWu",
+      "deployedAt": "2026-01-30T08:37:32.281Z",
+      "lastAttempt": "2026-01-30T08:37:32.281Z"
     },
     {
       "network": "arbitrum-one",
       "status": "success",
-      "cid": "QmPnAqgDE3c8GLhVn8Kk6p5J8sL5fTrECWsytwKA8o4VJx",
-      "deployedAt": "2026-01-23T13:51:55.934Z",
-      "lastAttempt": "2026-01-23T13:51:55.934Z"
+      "cid": "QmePqZ9aPEgc6nGg1hKfJevbUdj6fKuxCQkpSCmmzPd9Ja",
+      "deployedAt": "2026-01-30T08:37:41.995Z",
+      "lastAttempt": "2026-01-30T08:37:41.995Z"
     },
     {
       "network": "arbitrum-sepolia",
       "status": "success",
-      "cid": "QmYMVS6rdSco5b6RsoJ3s6kV6hMAxA8hGwvCfDnhR29vBJ",
-      "deployedAt": "2026-01-23T13:54:38.372Z",
-      "lastAttempt": "2026-01-23T13:54:38.372Z"
+      "cid": "QmXXaAMLPkKPtik4YRv12KLVFyhNJmuGn9wMEVmALKkxuY",
+      "deployedAt": "2026-01-30T08:37:50.005Z",
+      "lastAttempt": "2026-01-30T08:37:50.005Z"
     },
     {
       "network": "base",
       "status": "success",
-      "cid": "QmWaVL7DsxZ8krBxRtUU2xuYZg4mPD7dQ8DEPzVULGXEEt",
-      "deployedAt": "2026-01-23T13:56:43.716Z",
-      "lastAttempt": "2026-01-23T13:56:43.716Z"
+      "cid": "QmfXJwX2VbTL7TQETaStZ9h4595MNyQtKp2JPso49kLL32",
+      "deployedAt": "2026-01-30T08:38:00.693Z",
+      "lastAttempt": "2026-01-30T08:38:00.693Z"
     },
     {
       "network": "base-sepolia",
       "status": "success",
-      "cid": "QmfSqt5fkNi8TRLFswChwtBVKVT97Zf3uiGgFTf7Mhewca",
-      "deployedAt": "2026-01-23T13:58:36.318Z",
-      "lastAttempt": "2026-01-23T13:58:36.318Z"
+      "cid": "Qmef7Z8LkywRFSfjizhZ69wgARVPnyhQ34SsMsSzDR4Pbp",
+      "deployedAt": "2026-01-30T08:38:09.048Z",
+      "lastAttempt": "2026-01-30T08:38:09.048Z"
     },
     {
       "network": "matic",
       "status": "success",
-      "cid": "QmZXoSWNzfGLx569f2WxTmGX7qT7mgsjYo7AamTEMkiP74",
-      "deployedAt": "2026-01-23T14:00:38.211Z",
-      "lastAttempt": "2026-01-23T14:00:38.211Z"
+      "cid": "QmbEZgGTVCXaB8gZep2gMTxGWaf8ANjTQx5N97cN6L2dbV",
+      "deployedAt": "2026-01-30T08:38:18.408Z",
+      "lastAttempt": "2026-01-30T08:38:18.408Z"
     },
     {
       "network": "bsc",
       "status": "success",
-      "cid": "QmU6yij3c579ufDfu7q2QT4xuzqJMrLFm5HJQR6aSFp7zu",
-      "deployedAt": "2026-01-23T14:00:48.523Z",
-      "lastAttempt": "2026-01-23T14:00:48.523Z"
+      "cid": "QmSJaimBGM181oAzr9SBKcswZrjEmRK7c6EH6gHH5NS29F",
+      "deployedAt": "2026-01-30T08:38:26.974Z",
+      "lastAttempt": "2026-01-30T08:38:26.974Z"
     },
     {
       "network": "optimism",
       "status": "success",
-      "cid": "QmPd7BF7HptS54CoYdux7AEaHNxRuMGLGtn6hwj7jU83bR",
-      "deployedAt": "2026-01-23T14:00:58.536Z",
-      "lastAttempt": "2026-01-23T14:00:58.536Z"
+      "cid": "QmRV8qU5eE3F6D8dmTsR3RxPL9avJ31mt3Ww4cHBSjZTZM",
+      "deployedAt": "2026-01-30T08:38:35.606Z",
+      "lastAttempt": "2026-01-30T08:38:35.606Z"
     },
     {
       "network": "avalanche",
       "status": "success",
-      "cid": "QmaUweqXp1kNnjRia7eyy7DR3Ck9DEX4bJNAkKGs6ZaTRw",
-      "deployedAt": "2026-01-23T14:01:07.365Z",
-      "lastAttempt": "2026-01-23T14:01:07.365Z"
+      "cid": "QmRShEAzRFhzhk44bqJVNnyTczLQY61xXpPEcdSdnonFxf",
+      "deployedAt": "2026-01-30T08:38:44.892Z",
+      "lastAttempt": "2026-01-30T08:38:44.892Z"
     },
     {
       "network": "worldchain-mainnet",
       "status": "success",
-      "cid": "QmVtg8f6yvQ97ZJHVMhGA2cdT1s9AGU3oJ5bs8hQnG1FmW",
-      "deployedAt": "2026-01-23T14:01:16.843Z",
-      "lastAttempt": "2026-01-23T14:01:16.843Z"
+      "cid": "QmSNkaPkB9cYkoUqDGYvQEXcwebBKd8hs31NWFkokJLiRd",
+      "deployedAt": "2026-01-30T08:38:55.359Z",
+      "lastAttempt": "2026-01-30T08:38:55.359Z"
     },
     {
       "network": "zora-mainnet",
       "status": "success",
-      "cid": "QmWXmWnYMFjxJtByc2hYikrwKQttgLM35dmAS9nnRt7EJC",
-      "deployedAt": "2026-01-23T14:01:26.405Z",
-      "lastAttempt": "2026-01-23T14:01:26.405Z"
+      "cid": "QmNxsffQ4bZKm6NxqaUf3ZLh4ehZrmPePfirXcpfHykQUi",
+      "deployedAt": "2026-01-30T08:39:06.217Z",
+      "lastAttempt": "2026-01-30T08:39:06.217Z"
     },
     {
       "network": "blast-mainnet",
       "status": "success",
-      "cid": "Qmdgse1v2fVqMtLgGCW1sp1vs6jmvioAL9HhjDNDAE4b2i",
-      "deployedAt": "2026-01-23T14:01:35.855Z",
-      "lastAttempt": "2026-01-23T14:01:35.855Z"
+      "cid": "Qme1gfTZT5pm3p6qNeQ1DzWoLdR5Lp76mqh3vCbuQ93u7o",
+      "deployedAt": "2026-01-30T08:39:15.039Z",
+      "lastAttempt": "2026-01-30T08:39:15.039Z"
     },
     {
       "network": "unichain",
       "status": "success",
-      "cid": "QmNSy9p5tkBaths4axoN7FwAe15Ve6jEcMVXL4Nj5q9t7J",
-      "deployedAt": "2026-01-23T14:01:45.101Z",
-      "lastAttempt": "2026-01-23T14:01:45.101Z"
+      "cid": "QmRM4zAcidYNR34MKyi74wSo235XhXNv9YxUu81eDAKHuE",
+      "deployedAt": "2026-01-30T08:39:24.228Z",
+      "lastAttempt": "2026-01-30T08:39:24.228Z"
     },
     {
       "network": "unichain-sepolia",
       "status": "success",
-      "cid": "QmVU9mj7jmvqCuS9ZutaiMWDFoWgef35u1THkTikezMdzD",
-      "deployedAt": "2026-01-23T14:01:53.797Z",
-      "lastAttempt": "2026-01-23T14:01:53.797Z"
+      "cid": "QmNhxLrGwdiWyhe3VW4vmCBrierk2tx32v1p8Be56yrPSS",
+      "deployedAt": "2026-01-30T08:39:32.406Z",
+      "lastAttempt": "2026-01-30T08:39:32.406Z"
     },
     {
       "network": "soneium-mainnet",
       "status": "success",
-      "cid": "QmXdZdUkPgUMX2AAjuvciiJs7Q62BKQv4U9SPKsvyvfd8r",
-      "deployedAt": "2026-01-23T14:02:02.922Z",
-      "lastAttempt": "2026-01-23T14:02:02.922Z"
+      "cid": "Qmf5sgSc7C6GEEEk7aCGk8hWmpbP3Zj7ymBbTGjgwFku6M",
+      "deployedAt": "2026-01-30T08:39:41.217Z",
+      "lastAttempt": "2026-01-30T08:39:41.217Z"
     },
     {
       "network": "celo",
       "status": "success",
-      "cid": "QmeqyUrLDpbAwDyzXJT3cRHxPsAzWnhZXyhxFy1qjCqA8o",
-      "deployedAt": "2026-01-23T14:02:12.107Z",
-      "lastAttempt": "2026-01-23T14:02:12.107Z"
+      "cid": "QmNSs2CyWCs31D6PqdcwizEGvFtBCvtMyRdU5VxjTtfWco",
+      "deployedAt": "2026-01-30T08:39:49.716Z",
+      "lastAttempt": "2026-01-30T08:39:49.716Z"
     },
     {
       "network": "monad",
       "status": "success",
-      "cid": "QmfJuf8ArpZUwetTo6L861ETtvqxVDmf96c18nDuLp8Rpg",
-      "deployedAt": "2026-01-23T14:02:21.663Z",
-      "lastAttempt": "2026-01-23T14:02:21.663Z"
+      "cid": "QmQegFWqQG6GDsYJhqPzm8Py69byZftKK96327ZxutNYzn",
+      "deployedAt": "2026-01-30T08:39:58.872Z",
+      "lastAttempt": "2026-01-30T08:39:58.872Z"
     },
     {
       "network": "xlayer-mainnet",
       "status": "success",
-      "cid": "QmbuQsCjDzZffRV1fVHSkN2PpGopixMHuifTy26g9VXfXe",
-      "deployedAt": "2026-01-23T14:02:30.178Z",
-      "lastAttempt": "2026-01-23T14:02:30.178Z"
+      "cid": "QmX3YRGXLzX3ufcHJfVxf3PqSCsm7JvYpSt9PjDYSWwHNq",
+      "deployedAt": "2026-01-30T08:40:07.982Z",
+      "lastAttempt": "2026-01-30T08:40:07.982Z"
     },
     {
       "network": "megaeth-mainnet",
       "status": "success",
-      "cid": "QmWXi1u5DLrzy1F8F4s7EYzCwjbTMmMA6EMANEeCNTmQbv",
-      "deployedAt": "2026-01-23T14:02:39.620Z",
-      "lastAttempt": "2026-01-23T14:02:39.620Z"
+      "cid": "Qmac2qpF89WJUrBqubKMLmqiQeAbW6YLyyrWq1MURTcbS6",
+      "deployedAt": "2026-01-30T08:40:16.793Z",
+      "lastAttempt": "2026-01-30T08:40:16.793Z"
     },
     {
       "network": "mainnet",
       "status": "success",
-      "cid": "Qmac5BQ3yEnqTjFuPTuw4H5zAn6aEA2Ze8C9ZbMfm27JLg",
-      "deployedAt": "2026-01-23T14:02:48.226Z",
-      "lastAttempt": "2026-01-23T14:02:48.226Z"
+      "cid": "QmU62VQemwVi46QbyHcgniz6c9bsRwX8QXB3jfChNx8PLb",
+      "deployedAt": "2026-01-30T08:40:28.440Z",
+      "lastAttempt": "2026-01-30T08:40:28.440Z"
     }
   ]
 }
