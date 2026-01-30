@@ -4,6 +4,43 @@ import { NativeTokenDetails } from './nativeTokenDetails'
 import { getStaticDefinition, StaticTokenDefinition } from './staticTokenDefinition'
 import { ERC20__factory } from '../types/contracts'
 
+// Timeout wrapper to prevent RPC calls from hanging indefinitely
+// Throws error on both timeout and actual errors to ensure data quality
+async function withTimeout<T>(
+  promise: Promise<T>, 
+  timeoutMs: number, 
+  operationName: string,
+  tokenAddress: string
+): Promise<T> {
+  let didTimeout = false
+  
+  const timeoutPromise = new Promise<T>((_, reject) => setTimeout(() => {
+    didTimeout = true
+    const error = new Error(`${operationName} for token ${tokenAddress} timed out after ${timeoutMs}ms`)
+    logger.warn(`[TIMEOUT] ${error.message} - SubQuery will retry this block`)
+    reject(error)
+  }, timeoutMs))
+
+  try {
+    const result = await Promise.race([promise, timeoutPromise])
+    
+    // Log success
+    if (!didTimeout) {
+    }
+    
+    return result
+  } catch (error) {
+    // Error occurred (timeout or real error) - throw it so SubQuery can retry the block
+    if (!didTimeout) {
+      logger.error(`[FATAL] ${operationName} for token ${tokenAddress} failed: ${error} - SubQuery will retry this block`)
+    }
+    throw error
+  }
+}
+
+// Timeout for RPC calls (20 seconds - allows for slower RPC nodes)
+const RPC_TIMEOUT_MS = 20000
+
 export async function fetchTokenSymbol(
   tokenAddress: string,
   tokenOverrides: StaticTokenDefinition[],
@@ -18,14 +55,9 @@ export async function fetchTokenSymbol(
     return staticTokenDefinition.symbol
   }
 
-  try {
-    const contract = ERC20__factory.connect(tokenAddress, api)
-    const symbol = await contract.symbol()
-    return symbol
-  } catch (error) {
-    logger.warn(`Failed to fetch symbol for token ${tokenAddress}: ${error}`)
-    return 'unknown'
-  }
+  const contract = ERC20__factory.connect(tokenAddress, api)
+  const symbol = await withTimeout(contract.symbol(), RPC_TIMEOUT_MS, 'fetchTokenSymbol', tokenAddress)
+  return symbol
 }
 
 export async function fetchTokenName(
@@ -42,14 +74,9 @@ export async function fetchTokenName(
     return staticTokenDefinition.name
   }
 
-  try {
-    const contract = ERC20__factory.connect(tokenAddress, api)
-    const name = await contract.name()
-    return name
-  } catch (error) {
-    logger.warn(`Failed to fetch name for token ${tokenAddress}: ${error}`)
-    return 'unknown'
-  }
+  const contract = ERC20__factory.connect(tokenAddress, api)
+  const name = await withTimeout(contract.name(), RPC_TIMEOUT_MS, 'fetchTokenName', tokenAddress)
+  return name
 }
 
 export async function fetchTokenTotalSupply(tokenAddress: string): Promise<bigint> {
@@ -57,14 +84,9 @@ export async function fetchTokenTotalSupply(tokenAddress: string): Promise<bigin
     return ZERO_BI
   }
 
-  try {
-    const contract = ERC20__factory.connect(tokenAddress, api)
-    const totalSupply = await contract.totalSupply()
-    return BigInt(totalSupply.toString())
-  } catch (error) {
-    logger.warn(`Failed to fetch total supply for token ${tokenAddress}: ${error}`)
-    return ZERO_BI
-  }
+  const contract = ERC20__factory.connect(tokenAddress, api)
+  const totalSupply = await withTimeout(contract.totalSupply(), RPC_TIMEOUT_MS, 'fetchTokenTotalSupply', tokenAddress)
+  return BigInt(totalSupply.toString())
 }
 
 export async function fetchTokenDecimals(tokenAddress: string, nativeTokenDetails: NativeTokenDetails): Promise<bigint> {
@@ -72,12 +94,7 @@ export async function fetchTokenDecimals(tokenAddress: string, nativeTokenDetail
     return nativeTokenDetails.decimals
   }
 
-  try {
-    const contract = ERC20__factory.connect(tokenAddress, api)
-    const decimals = await contract.decimals()
-    return BigInt(decimals)
-  } catch (error) {
-    logger.warn(`Failed to fetch decimals for token ${tokenAddress}: ${error}`)
-    return BigInt(18)
-  }
+  const contract = ERC20__factory.connect(tokenAddress, api)
+  const decimals = await withTimeout(contract.decimals(), RPC_TIMEOUT_MS, 'fetchTokenDecimals', tokenAddress)
+  return BigInt(decimals)
 }

@@ -283,7 +283,7 @@ const project: EthereumProject = {
   dataSources: [
 ${dataSources.join(',\n')}
   ],
-  repository: "https://github.com/Uniswap/v4-subgraph",
+  repository: "https://github.com/subquery/uniswap-v4",
 };
 
 export default project;

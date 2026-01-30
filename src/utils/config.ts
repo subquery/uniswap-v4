@@ -68,6 +68,20 @@ export interface SubqueryConfig {
 // Helper function to convert address to lowercase for consistency
 export const toLower = (address: string): string => address.toLowerCase()
 
+// Helper function to normalize all addresses in config to lowercase
+// This ensures consistency throughout the application
+function normalizeConfig(config: SubqueryConfig): SubqueryConfig {
+  return {
+    ...config,
+    poolManagerAddress: config.poolManagerAddress.toLowerCase(),
+    stablecoinWrappedNativePoolId: config.stablecoinWrappedNativePoolId.toLowerCase(),
+    wrappedNativeAddress: config.wrappedNativeAddress.toLowerCase(),
+    stablecoinAddresses: config.stablecoinAddresses.map(addr => addr.toLowerCase()),
+    whitelistTokens: config.whitelistTokens.map(addr => addr.toLowerCase()),
+    poolsToSkip: config.poolsToSkip.map(addr => addr.toLowerCase()),
+  }
+}
+
 // Mainnet configuration
 const MAINNET_CONFIG: SubqueryConfig = {
   poolManagerAddress: '0x000000000004444c5dc75cB358380D2e3dE08A90',
@@ -497,7 +511,8 @@ export function getConfig(chainId?: string, network?: NetworkName): SubqueryConf
     configLogged = true
   }
 
-  return selectedConfig
+  // Normalize all addresses to lowercase for consistency
+  return normalizeConfig(selectedConfig)
 }
 
 // Export default config (mainnet) for convenience

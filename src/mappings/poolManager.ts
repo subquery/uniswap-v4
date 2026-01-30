@@ -100,12 +100,9 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
           totalValueLockedUSD: 0,
           totalValueLockedUSDUntracked: 0,
           txCount: ZERO_BI,
-          poolCount: ZERO_BI
+          poolCount: ZERO_BI,
+          whitelistPools: []
         })
-
-        const derivedETH = await findNativePerToken(token0, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
-        token0.derivedETH = derivedETH
-        await token0.save()
       })()
     )
   }
@@ -136,12 +133,9 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
           totalValueLockedUSD: 0,
           totalValueLockedUSDUntracked: 0,
           txCount: ZERO_BI,
-          poolCount: ZERO_BI
+          poolCount: ZERO_BI,
+          whitelistPools: []
         })
-
-        const derivedETH = await findNativePerToken(token1, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
-        token1.derivedETH = derivedETH
-        await token1.save()
       })()
     )
   }
@@ -197,13 +191,19 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
   pool.token0Price = prices[0]
   pool.token1Price = prices[1]
 
-  // Update token pool counts
-  token0.poolCount = token0.poolCount + ONE_BI
-  token1.poolCount = token1.poolCount + ONE_BI
-
   // Update whitelisted pools for USD pricing
-  // Note: The schema uses string IDs, not entity references, so we track the pool IDs separately
-  // The whitelist is used for determining which tokens to use for tracked volume calculations
+  // If token0 is whitelisted, add this pool to token1's whitelist
+  if (whitelistTokens.includes(token0.id)) {
+    if (!token1.whitelistPools.includes(poolId)) {
+      token1.whitelistPools.push(poolId)
+    }
+  }
+  // If token1 is whitelisted, add this pool to token0's whitelist
+  if (whitelistTokens.includes(token1.id)) {
+    if (!token0.whitelistPools.includes(poolId)) {
+      token0.whitelistPools.push(poolId)
+    }
+  }
 
   // Save all entities
   await pool.save()
@@ -235,4 +235,5 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
 
   await token0.save()
   await token1.save()
+
 }

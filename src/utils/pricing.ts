@@ -38,7 +38,7 @@ export async function getNativePriceInUSD(stablecoinWrappedNativePoolId: string,
 
 /**
  * Search through graph to find derived Eth per token.
- * Simplified implementation for SubQuery migration
+ * @todo update to be derived ETH (add stablecoin estimates)
  */
 export async function findNativePerToken(
   token: Token,
@@ -50,17 +50,60 @@ export async function findNativePerToken(
     return 1;
   }
 
-  // Simplified implementation - to be enhanced later with proper pool querying
+  const whiteList = token.whitelistPools
+  // for now just take USD from pool with greatest TVL
+  // need to update this to actually detect best rate based on liquidity distribution
+  let largestLiquidityETH = 0
+  let priceSoFar = 0
   const bundle = await Bundle.get('1')
+
+  if (!bundle) {
+    return 0
+  }
 
   // hardcoded fix for incorrect rates
   // if whitelist includes token - get the safe price
   if (stablecoinAddresses.includes(token.id)) {
-    return bundle ? Number(safeDiv(ONE_BD, new bigDecimal(bundle.ethPriceUSD)).getValue()) : 0
-  }
+    priceSoFar = Number(safeDiv(ONE_BD, new bigDecimal(bundle.ethPriceUSD), 18).getValue())
+  } else {
+    // Loop through whitelist pools to find the one with highest liquidity
+    for (let i = 0; i < whiteList.length; i++) {
+      const poolAddress = whiteList[i]
+      const pool = await Pool.get(poolAddress)
 
-  // For now, return the token's derivedETH or a default value
-  return token.derivedETH || 0
+      if (pool && pool.liquidity > ZERO_BI) {
+        // Check if this token is token0
+        if (pool.token0Id == token.id) {
+          // whitelist token is token1
+          const token1 = await Token.get(pool.token1Id)
+          if (token1) {
+            // get the derived ETH in pool
+            const ethLocked = pool.totalValueLockedToken1 * token1.derivedETH
+            if (ethLocked > largestLiquidityETH && ethLocked > minimumNativeLocked) {
+              largestLiquidityETH = ethLocked
+              // token1 per our token * Eth per token1
+              priceSoFar = pool.token1Price * token1.derivedETH
+            }
+          }
+        }
+
+        // Check if this token is token1
+        if (pool.token1Id == token.id) {
+          const token0 = await Token.get(pool.token0Id)
+          if (token0) {
+            // get the derived ETH in pool
+            const ethLocked = pool.totalValueLockedToken0 * token0.derivedETH
+            if (ethLocked > largestLiquidityETH && ethLocked > minimumNativeLocked) {
+              largestLiquidityETH = ethLocked
+              // token0 per our token * ETH per token0
+              priceSoFar = pool.token0Price * token0.derivedETH
+            }
+          }
+        }
+      }
+    }
+  }
+  return priceSoFar
 }
 
 /**
