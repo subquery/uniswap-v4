@@ -347,7 +347,7 @@ function main() {
     }
     console.log('')
     console.log('Next steps:')
-    console.log('  1. npm run build')
+    console.log('  1. npm run prepack')
     console.log('  2. npm run start:docker')
   } catch (error) {
     console.error('Error generating project.ts:', error)

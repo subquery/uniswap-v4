@@ -122,7 +122,7 @@ async function deployNetwork(network: string): Promise<DeployStatus> {
 
   // Step 2: Build
   console.log(`[2/3] Building...`)
-  const buildResult = runCommand('npm run build')
+  const buildResult = runCommand('npm run prepack')
   if (!buildResult.success) {
     console.log(`  ❌ Failed to build`)
     return {
