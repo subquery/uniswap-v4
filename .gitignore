@@ -62,3 +62,5 @@ Thumbs.db
 .project-cid
 .claude
 .serena
+scripts/browser-scripts
+.env
