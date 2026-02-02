@@ -42,8 +42,8 @@ services:
       # - --workers=4
       - --batch-size=10
       - --unfinalized-blocks=true
-      # - --network-endpoint="https://eth.api.onfinality.io/rpc?apikey=b8b99961-e876-41dd-bd7d-0c143f3a3428"
-      - --network-endpoint="https://rpc.xlayer.tech"
+      - --network-endpoint="https://eth.api.onfinality.io/rpc?apikey=b8b99961-e876-41dd-bd7d-0c143f3a3428"
+      # - --network-endpoint="https://rpc.xlayer.tech"
       # - --network-dictionary="http://host.docker.internal:8080/ethereum-mainnet"
       # - --dictionary-registry="false"
       # - --debug="dictionary-v2"

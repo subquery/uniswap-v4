@@ -403,7 +403,14 @@ const WORLDCHAIN_CONFIG: SubqueryConfig = {
     '0x859dbe24b90c9f2f7742083d3cf59ca41f55be5d', // sDAI
     '0x0000000000000000000000000000000000000000', // Native ETH
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x79a02482a880bce3f13e09da970dc34db4cd24d1', // USDC.e
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
 }
@@ -422,7 +429,14 @@ const ZORA_CONFIG: SubqueryConfig = {
     '0xcccccccc7021b32ebb4e8c08314bd62f7c653ec4', // USDzC
     '0x0000000000000000000000000000000000000000', // Native ETH
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xcccccccc7021b32ebb4e8c08314bd62f7c653ec4', // USDzC
+      'USDzC',
+      'USD Coin on Zora',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
 }
@@ -441,7 +455,14 @@ const BLAST_CONFIG: SubqueryConfig = {
     '0x4300000000000000000000000000000000000003', // USDB
     '0x0000000000000000000000000000000000000000', // Native ETH
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x4300000000000000000000000000000000000003', // USDB
+      'USDB',
+      'Blast USD',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
 }
@@ -465,7 +486,20 @@ const UNICHAIN_CONFIG: SubqueryConfig = {
     '0x9151434b16b9763660705744891fa906f660ecc5', // USDT0
     '0x927b51f251480a681271180da4de28d44ec4afb8', // WBTC
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x078d782b760474a361dda0af3839290b0ef57ad6', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x9151434b16b9763660705744891fa906f660ecc5', // USDT0
+      'USDT0',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
 }
@@ -484,7 +518,14 @@ const UNICHAIN_SEPOLIA_CONFIG: SubqueryConfig = {
     '0x31d0220469e10c4e71834a79b1f276d740d3768f', // USDC
     '0x4200000000000000000000000000000000000006', // WETH
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x31d0220469e10c4e71834a79b1f276d740d3768f', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
 }
@@ -503,7 +544,14 @@ const SONEIUM_CONFIG: SubqueryConfig = {
     '0xba9986d2381edf1da03b0b9c1f8b00dc4aacc369', // USDC
     '0x0000000000000000000000000000000000000000', // Native ETH
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xba9986d2381edf1da03b0b9c1f8b00dc4aacc369', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
 }
@@ -534,7 +582,26 @@ const CELO_CONFIG: SubqueryConfig = {
     '0xd221812de1bd094f35587ee8e174b07b6167d9af', // WETH
     '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e', // USDT
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xceba9300f2b948710d2653dd7b07f33a8b32118c', // Native USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e', // USDT
+      'USDT',
+      'Tether USD',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x765de816845861e75a25fca122bb6898b8b1282a', // cUSD
+      'cUSD',
+      'Celo Dollar',
+      BigInt(18)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('CELO', 'Celo', BigInt(18)),
 }
@@ -560,7 +627,20 @@ const MONAD_CONFIG: SubqueryConfig = {
     '0xea17e5a9efebf1477db45082d67010e2245217f1', // WSOL
     '0x0555e30da8f98308edb960aa94c0db47230d2b9c', // WBTC
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x754704bc059f8c67012fed69bc8a327a5aafb603', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0xe7cd86e13ac4309349f30b3435a9d337750fc82d', // USDT
+      'USDT',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('MON', 'MON', BigInt(18)),
 }
@@ -586,7 +666,20 @@ const XLAYER_CONFIG: SubqueryConfig = {
     '0xea034fb02eb1808c2cc3adbfc15f447b93cbe08e1', // WBTC
     '0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4', // DAI
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x74b7f16337b8972027f6196a17a631ac6de26d22', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x1e4a5963abfd975d8c9021ce480b42188849d41d', // USDT
+      'USDT',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('OKB', 'OKB', BigInt(18)),
 }
@@ -607,7 +700,14 @@ const MEGAETH_CONFIG: SubqueryConfig = {
     '0xfafddbb3fc7688494971a79cc65dca3ef82079e7', // USDm
     '0x28b7e77f82b25b95953825f1e3ea0e36c1c29861', // MEGA
   ],
-  tokenOverrides: [],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb', // USDT0
+      'USDT0',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
   poolsToSkip: [],
   nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
 }

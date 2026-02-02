@@ -75,73 +75,60 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
   const tokenCreationPromises: Promise<void>[] = []
 
   if (token0 === undefined) {
-    tokenCreationPromises.push(
-      (async () => {
-        // Fetch token details in parallel for better performance
-        const [symbol, name, totalSupply, decimals] = await Promise.all([
-          fetchTokenSymbol(token0Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenName(token0Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenTotalSupply(token0Id),
-          fetchTokenDecimals(token0Id, nativeTokenDetails)
-        ])
+    const [symbol, name, totalSupply, decimals] = await Promise.all([
+      fetchTokenSymbol(token0Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenName(token0Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenTotalSupply(token0Id),
+      fetchTokenDecimals(token0Id, nativeTokenDetails)
+    ])
 
-        token0 = Token.create({
-          id: token0Id,
-          symbol,
-          name,
-          totalSupply,
-          decimals,
-          derivedETH: 0,
-          volume: 0,
-          volumeUSD: 0,
-          feesUSD: 0,
-          untrackedVolumeUSD: 0,
-          totalValueLocked: 0,
-          totalValueLockedUSD: 0,
-          totalValueLockedUSDUntracked: 0,
-          txCount: ZERO_BI,
-          poolCount: ZERO_BI,
-          whitelistPools: []
-        })
-      })()
-    )
+    token0 = Token.create({
+      id: token0Id,
+      symbol,
+      name,
+      totalSupply,
+      decimals,
+      derivedETH: 0,
+      volume: 0,
+      volumeUSD: 0,
+      feesUSD: 0,
+      untrackedVolumeUSD: 0,
+      totalValueLocked: 0,
+      totalValueLockedUSD: 0,
+      totalValueLockedUSDUntracked: 0,
+      txCount: ZERO_BI,
+      poolCount: ZERO_BI,
+      whitelistPools: []
+    })
   }
 
   if (token1 === undefined) {
-    tokenCreationPromises.push(
-      (async () => {
-        // Fetch token details in parallel for better performance
-        const [symbol, name, totalSupply, decimals] = await Promise.all([
-          fetchTokenSymbol(token1Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenName(token1Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenTotalSupply(token1Id),
-          fetchTokenDecimals(token1Id, nativeTokenDetails)
-        ])
+    const [symbol, name, totalSupply, decimals] = await Promise.all([
+      fetchTokenSymbol(token1Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenName(token1Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenTotalSupply(token1Id),
+      fetchTokenDecimals(token1Id, nativeTokenDetails)
+    ])
 
-        token1 = Token.create({
-          id: token1Id,
-          symbol,
-          name,
-          totalSupply,
-          decimals,
-          derivedETH: 0,
-          volume: 0,
-          volumeUSD: 0,
-          feesUSD: 0,
-          untrackedVolumeUSD: 0,
-          totalValueLocked: 0,
-          totalValueLockedUSD: 0,
-          totalValueLockedUSDUntracked: 0,
-          txCount: ZERO_BI,
-          poolCount: ZERO_BI,
-          whitelistPools: []
-        })
-      })()
-    )
+    token1 = Token.create({
+      id: token1Id,
+      symbol,
+      name,
+      totalSupply,
+      decimals,
+      derivedETH: 0,
+      volume: 0,
+      volumeUSD: 0,
+      feesUSD: 0,
+      untrackedVolumeUSD: 0,
+      totalValueLocked: 0,
+      totalValueLockedUSD: 0,
+      totalValueLockedUSDUntracked: 0,
+      txCount: ZERO_BI,
+      poolCount: ZERO_BI,
+      whitelistPools: []
+    })
   }
-
-  // Execute all token creation promises in parallel
-  await Promise.all(tokenCreationPromises)
 
   // Ensure tokens are defined (they should be after creation)
   if (!token0 || !token1) {
