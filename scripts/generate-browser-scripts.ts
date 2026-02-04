@@ -71,17 +71,17 @@ const NETWORK_CONFIGS: Record<string, NetworkConfig> = {
   "worldchain-mainnet": {
     endpoint: `https://worldchain-mainnet.g.alchemy.com/public`,
     deploymentPath: "uniswap-v4-worldchain-mainnet",
-    batchSize: 30,
+    batchSize: 10,
   },
   "zora-mainnet": {
     endpoint: `https://rpc.zora.energy`,
     deploymentPath: "uniswap-v4-zora-mainnet",
-    batchSize: 30,
+    batchSize: 10,
   },
   "blast-mainnet": {
     endpoint: `https://rpc.blast.io`,
     deploymentPath: "uniswap-v4-blast-mainnet",
-    batchSize: 30,
+    batchSize: 10,
   },
   unichain: {
     endpoint: `https://unichain.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
@@ -96,7 +96,7 @@ const NETWORK_CONFIGS: Record<string, NetworkConfig> = {
   "soneium-mainnet": {
     endpoint: `https://rpc.soneium.org`,
     deploymentPath: "uniswap-v4-soneium-mainnet",
-    batchSize: 30,
+    batchSize: 10,
   },
   celo: {
     endpoint: `https://celo.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
@@ -111,12 +111,12 @@ const NETWORK_CONFIGS: Record<string, NetworkConfig> = {
   "xlayer-mainnet": {
     endpoint: `https://rpc.xlayer.tech`,
     deploymentPath: "uniswap-v4-xlayer",
-    batchSize: 30,
+    batchSize: 10,
   },
   "megaeth-mainnet": {
     endpoint: `https://mainnet.megaeth.com/rpc`,
     deploymentPath: "uniswap-v4-megaeth",
-    batchSize: 30,
+    batchSize: 10,
   },
 };
 
