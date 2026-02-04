@@ -21,52 +21,52 @@ const NETWORK_CONFIGS: Record<string, NetworkConfig> = {
   mainnet: {
     endpoint: `https://eth.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v3-ethereum",
-    batchSize: 50,
+    batchSize: 30,
   },
   sepolia: {
     endpoint: `https://eth-sepolia.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-sepolia",
-    batchSize: 50,
+    batchSize: 30,
   },
   "arbitrum-one": {
     endpoint: `https://arbitrum.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-arbitrum-one",
-    batchSize: 50,
+    batchSize: 30,
   },
   "arbitrum-sepolia": {
     endpoint: `https://arbitrum-sepolia.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-arbitrum-sepolia",
-    batchSize: 50,
+    batchSize: 30,
   },
   base: {
     endpoint: `https://base.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-base",
-    batchSize: 50,
+    batchSize: 30,
   },
   "base-sepolia": {
     endpoint: `https://base-sepolia.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-base-sepolia",
-    batchSize: 50,
+    batchSize: 30,
   },
   matic: {
     endpoint: `https://polygon.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-matic",
-    batchSize: 50,
+    batchSize: 30,
   },
   bsc: {
     endpoint: `https://bnb.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-bsc",
-    batchSize: 50,
+    batchSize: 30,
   },
   optimism: {
     endpoint: `https://optimism.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-optimism",
-    batchSize: 50,
+    batchSize: 30,
   },
   avalanche: {
     endpoint: `https://avalanche.api.onfinality.io/rpc/ext/bc/C/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-avalanche",
-    batchSize: 50,
+    batchSize: 30,
   },
   "worldchain-mainnet": {
     endpoint: `https://worldchain-mainnet.g.alchemy.com/public`,
@@ -86,12 +86,12 @@ const NETWORK_CONFIGS: Record<string, NetworkConfig> = {
   unichain: {
     endpoint: `https://unichain.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-unichain",
-    batchSize: 50,
+    batchSize: 30,
   },
   "unichain-sepolia": {
     endpoint: `https://unichain-sepolia.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-unichain-sepolia",
-    batchSize: 50,
+    batchSize: 30,
   },
   "soneium-mainnet": {
     endpoint: `https://rpc.soneium.org`,
@@ -101,12 +101,12 @@ const NETWORK_CONFIGS: Record<string, NetworkConfig> = {
   celo: {
     endpoint: `https://celo.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-celo",
-    batchSize: 50,
+    batchSize: 30,
   },
   monad: {
     endpoint: `https://monad-mainnet.api.onfinality.io/rpc?apikey=${ONFINALITY_API_KEY}`,
     deploymentPath: "uniswap-v4-monad",
-    batchSize: 50,
+    batchSize: 30,
   },
   "xlayer-mainnet": {
     endpoint: `https://rpc.xlayer.tech`,
