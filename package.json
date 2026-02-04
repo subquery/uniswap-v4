@@ -16,7 +16,7 @@
     "deploy": "subql publish",
     "deploy-rm": "rm -f ./deploy-status.json",
     "deploy-all": "ts-node scripts/deploy-all.ts",
-    "deploy-re": "npm run deploy-rm && npm run deploy-all"
+    "deploy-ra": "npm run deploy-rm && npm run deploy-all"
   },
   "homepage": "https://github.com/Uniswap/v4-subgraph",
   "repository": "https://github.com/Uniswap/v4-subgraph",
