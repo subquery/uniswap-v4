@@ -105,14 +105,14 @@ export async function loadTransaction(event: EthereumLog): Promise<Transaction> 
       blockNumber: BigInt(event.blockNumber),
       timestamp: BigInt(event.block.timestamp),
       gasUsed: BigInt(0), // needs to be moved to transaction receipt
-      gasPrice: event.transaction.gasPrice || BigInt(0)
+      gasPrice: event.transaction?.gasPrice || BigInt(0)
     })
   }
   // Always update transaction fields to match v4-subgraph behavior
   transaction.blockNumber = BigInt(event.blockNumber)
   transaction.timestamp = BigInt(event.block.timestamp)
   transaction.gasUsed = BigInt(0)
-  transaction.gasPrice = event.transaction.gasPrice || BigInt(0)
+  transaction.gasPrice = event.transaction?.gasPrice || BigInt(0)
   await transaction.save()
   return transaction
 }
