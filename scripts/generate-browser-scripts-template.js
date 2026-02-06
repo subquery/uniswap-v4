@@ -42,7 +42,7 @@ async function deploySubquery({
           unfinalizedBlocks: true,
           unsafe: false,
           schemaMigration: false,
-          skipTransactions: false,
+          skipTransactions: true,
           BlockConfirmations: 20,
           batchSize: batchSize,
           dictionaryTimeout: 10,
