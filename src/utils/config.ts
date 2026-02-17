@@ -1,29 +1,10 @@
 import { NativeTokenDetails } from './nativeTokenDetails'
 import { StaticTokenDefinition } from './staticTokenDefinition'
+import { NetworkName } from './network-types'
+import { RUNTIME_NETWORK, RUNTIME_CHAIN_ID } from './runtime-config'
 
-// Network name constants for type safety
-export enum NetworkName {
-  MAINNET = 'mainnet',
-  SEPOLIA = 'sepolia',
-  ARBITRUM_ONE = 'arbitrum-one',
-  ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
-  BASE = 'base',
-  BASE_SEPOLIA = 'base-sepolia',
-  POLYGON = 'matic',
-  BSC = 'bsc',
-  OPTIMISM = 'optimism',
-  AVALANCHE = 'avalanche',
-  WORLDCHAIN = 'worldchain-mainnet',
-  ZORA = 'zora-mainnet',
-  BLAST = 'blast-mainnet',
-  UNICHAIN = 'unichain',
-  UNICHAIN_SEPOLIA = 'unichain-sepolia',
-  SONEIUM = 'soneium-mainnet',
-  CELO = 'celo',
-  MONAD = 'monad',
-  XLAYER = 'xlayer-mainnet',
-  MEGAETH = 'megaeth-mainnet',
-}
+// Re-export NetworkName for backward compatibility
+export { NetworkName }
 
 // Chain ID to network name mapping
 const CHAIN_ID_TO_NETWORK: Record<string, NetworkName> = {
@@ -41,12 +22,12 @@ const CHAIN_ID_TO_NETWORK: Record<string, NetworkName> = {
   '7777777': NetworkName.ZORA,
   '81457': NetworkName.BLAST,
   '130': NetworkName.UNICHAIN,
-  '1115': NetworkName.UNICHAIN_SEPOLIA,
-  '50894': NetworkName.SONEIUM,
+  '1301': NetworkName.UNICHAIN_SEPOLIA,
+  '1868': NetworkName.SONEIUM,
   '42220': NetworkName.CELO,
-  '4312': NetworkName.MONAD,
+  '143': NetworkName.MONAD,
   '196': NetworkName.XLAYER,
-  '648': NetworkName.MEGAETH,
+  '4326': NetworkName.MEGAETH,
 }
 
 // Configuration interface for SubQuery
@@ -86,6 +67,20 @@ export interface SubqueryConfig {
 
 // Helper function to convert address to lowercase for consistency
 export const toLower = (address: string): string => address.toLowerCase()
+
+// Helper function to normalize all addresses in config to lowercase
+// This ensures consistency throughout the application
+function normalizeConfig(config: SubqueryConfig): SubqueryConfig {
+  return {
+    ...config,
+    poolManagerAddress: config.poolManagerAddress.toLowerCase(),
+    stablecoinWrappedNativePoolId: config.stablecoinWrappedNativePoolId.toLowerCase(),
+    wrappedNativeAddress: config.wrappedNativeAddress.toLowerCase(),
+    stablecoinAddresses: config.stablecoinAddresses.map(addr => addr.toLowerCase()),
+    whitelistTokens: config.whitelistTokens.map(addr => addr.toLowerCase()),
+    poolsToSkip: config.poolsToSkip.map(addr => addr.toLowerCase()),
+  }
+}
 
 // Mainnet configuration
 const MAINNET_CONFIG: SubqueryConfig = {
@@ -391,65 +386,334 @@ const BASE_SEPOLIA_CONFIG = createPlaceholderConfig(
   'Ethereum'
 )
 
-const WORLDCHAIN_CONFIG = createPlaceholderConfig(
-  '0xb1860d529182ac3bc1f51fa2abd56662b7d13f33',
-  'ETH',
-  'Ethereum'
-)
+const WORLDCHAIN_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0xb1860d529182ac3bc1f51fa2abd56662b7d13f33',
+  stablecoinWrappedNativePoolId: '0x45c70c27c25654e8c73bc0d63ba350144de8207a73c53d38409d3e127d993dc7',
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0x4200000000000000000000000000000000000006', // WETH
+  minimumNativeLocked: 1,
+  stablecoinAddresses: [
+    '0x79a02482a880bce3f13e09da970dc34db4cd24d1', // USDC.e
+  ],
+  whitelistTokens: [
+    '0x4200000000000000000000000000000000000006', // WETH
+    '0x79a02482a880bce3f13e09da970dc34db4cd24d1', // USDC.e
+    '0x03c7054bcb39f7b2e5b2c7acb37583e32d70cfa3', // WBTC
+    '0x2cfc85d8e48f8eab294be644d9e25c3030863003', // WLD
+    '0x859dbe24b90c9f2f7742083d3cf59ca41f55be5d', // sDAI
+    '0x0000000000000000000000000000000000000000', // Native ETH
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x79a02482a880bce3f13e09da970dc34db4cd24d1', // USDC.e
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
+}
 
-const ZORA_CONFIG = createPlaceholderConfig(
-  '0x0575338e4c17006ae181b47900a84404247ca30f',
-  'ETH',
-  'Ethereum'
-)
+const ZORA_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x0575338e4c17006ae181b47900a84404247ca30f',
+  stablecoinWrappedNativePoolId: '0x8362fda2356bf98851192da5b5b89553dd92ad73f8e8d6be97f154ce72b0adfe',
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0x4200000000000000000000000000000000000006', // WETH
+  minimumNativeLocked: 1,
+  stablecoinAddresses: [
+    '0xcccccccc7021b32ebb4e8c08314bd62f7c653ec4', // USDzC
+  ],
+  whitelistTokens: [
+    '0x4200000000000000000000000000000000000006', // WETH
+    '0xcccccccc7021b32ebb4e8c08314bd62f7c653ec4', // USDzC
+    '0x0000000000000000000000000000000000000000', // Native ETH
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xcccccccc7021b32ebb4e8c08314bd62f7c653ec4', // USDzC
+      'USDzC',
+      'USD Coin on Zora',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
+}
 
-const BLAST_CONFIG = createPlaceholderConfig(
-  '0x1631559198a9e474033433b2958dabc135ab6446',
-  'ETH',
-  'Ethereum'
-)
+const BLAST_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x1631559198a9e474033433b2958dabc135ab6446',
+  stablecoinWrappedNativePoolId: '0x83e7c9f12348a95a5fe02c8af7074dd52defd1e108e19e51234c49da56d7c635',
+  stablecoinIsToken0: true,
+  wrappedNativeAddress: '0x4300000000000000000000000000000000000004', // WETH
+  minimumNativeLocked: 1,
+  stablecoinAddresses: [
+    '0x4300000000000000000000000000000000000003', // USDB
+  ],
+  whitelistTokens: [
+    '0x4300000000000000000000000000000000000004', // WETH
+    '0x4300000000000000000000000000000000000003', // USDB
+    '0x0000000000000000000000000000000000000000', // Native ETH
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x4300000000000000000000000000000000000003', // USDB
+      'USDB',
+      'Blast USD',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
+}
 
-const UNICHAIN_CONFIG = createPlaceholderConfig(
-  '0x1f98400000000000000000000000000000000004',
-  'ETH',
-  'Ethereum'
-)
+const UNICHAIN_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x1f98400000000000000000000000000000000004',
+  stablecoinWrappedNativePoolId: '0x25939956ef14a098d95051d86c75890cfd623a9eeba055e46d8dd9135980b37c',
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0x0000000000000000000000000000000000000000', // Native ETH
+  minimumNativeLocked: 1,
+  stablecoinAddresses: [
+    '0x078d782b760474a361dda0af3839290b0ef57ad6', // USDC
+    '0x20cab320a855b39f724131c69424240519573f81', // DAI
+    '0x9151434b16b9763660705744891fa906f660ecc5', // USDT0
+  ],
+  whitelistTokens: [
+    '0x4200000000000000000000000000000000000006', // WETH
+    '0x078d782b760474a361dda0af3839290b0ef57ad6', // USDC
+    '0x20cab320a855b39f724131c69424240519573f81', // DAI
+    '0x0000000000000000000000000000000000000000', // Native ETH
+    '0x9151434b16b9763660705744891fa906f660ecc5', // USDT0
+    '0x927b51f251480a681271180da4de28d44ec4afb8', // WBTC
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x078d782b760474a361dda0af3839290b0ef57ad6', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x9151434b16b9763660705744891fa906f660ecc5', // USDT0
+      'USDT0',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
+}
 
-const UNICHAIN_SEPOLIA_CONFIG = createPlaceholderConfig(
-  '0x00b036b58a818b1bc34d502d3fe730db729e62ac',
-  'ETH',
-  'Ethereum'
-)
+const UNICHAIN_SEPOLIA_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x00b036b58a818b1bc34d502d3fe730db729e62ac',
+  stablecoinWrappedNativePoolId: '0x1927686e9757bb312fc499e480536d466c788dcdc86a1b62c82643157f05b603',
+  stablecoinIsToken0: true,
+  wrappedNativeAddress: '0x4200000000000000000000000000000000000006', // WETH
+  minimumNativeLocked: 1,
+  stablecoinAddresses: [
+    '0x31d0220469e10c4e71834a79b1f276d740d3768f', // USDC
+  ],
+  whitelistTokens: [
+    '0x0000000000000000000000000000000000000000', // Native ETH
+    '0x31d0220469e10c4e71834a79b1f276d740d3768f', // USDC
+    '0x4200000000000000000000000000000000000006', // WETH
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x31d0220469e10c4e71834a79b1f276d740d3768f', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
+}
 
-const SONEIUM_CONFIG = createPlaceholderConfig(
-  '0x360e68faccca8ca495c1b759fd9eee466db9fb32',
-  'ETH',
-  'Ethereum'
-)
+const SONEIUM_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x360e68faccca8ca495c1b759fd9eee466db9fb32',
+  stablecoinWrappedNativePoolId: '0x3d18457ff1dcfa8ffb14b162ae3def9eda618569ac4a6aadc827628f5981b515',
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0x0000000000000000000000000000000000000000', // Native ETH
+  minimumNativeLocked: 1,
+  stablecoinAddresses: [
+    '0xba9986d2381edf1da03b0b9c1f8b00dc4aacc369', // USDC
+  ],
+  whitelistTokens: [
+    '0x4200000000000000000000000000000000000006', // WETH
+    '0xba9986d2381edf1da03b0b9c1f8b00dc4aacc369', // USDC
+    '0x0000000000000000000000000000000000000000', // Native ETH
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xba9986d2381edf1da03b0b9c1f8b00dc4aacc369', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
+}
 
-const CELO_CONFIG = createPlaceholderConfig(
-  '0x288dc841a52fca2707c6947b3a777c5e56cd87bc',
-  'CELO',
-  'Celo'
-)
+const CELO_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x288dc841a52fca2707c6947b3a777c5e56cd87bc',
+  stablecoinWrappedNativePoolId: '0x29aa9a73eedb0324148d5e43c5ebf2d479fbf04abea11e0d5afa7143387e30c6',
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0x471ece3750da237f93b8e339c536989b8978a438', // CELO
+  minimumNativeLocked: 3600,
+  stablecoinAddresses: [
+    '0x765de816845861e75a25fca122bb6898b8b1282a', // CUSD
+    '0xef4229c8c3250c675f21bcefa42f58efbff6002a', // Bridged USDC
+    '0xceba9300f2b948710d2653dd7b07f33a8b32118c', // Native USDC
+    '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e', // USDT
+  ],
+  whitelistTokens: [
+    '0x471ece3750da237f93b8e339c536989b8978a438', // CELO
+    '0x765de816845861e75a25fca122bb6898b8b1282a', // CUSD
+    '0xef4229c8c3250c675f21bcefa42f58efbff6002a', // Bridged USDC
+    '0xceba9300f2b948710d2653dd7b07f33a8b32118c', // Native USDC
+    '0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73', // CEUR
+    '0xe8537a3d056da446677b9e9d6c5db704eaab4787', // CREAL
+    '0x46c9757c5497c5b1f2eb73ae79b6b67d119b0b58', // PACT
+    '0x17700282592d6917f6a73d0bf8accf4d578c131e', // MOO
+    '0x66803fb87abd4aac3cbb3fad7c3aa01f6f3fb207', // Portal Eth
+    '0xbaab46e28388d2779e6e31fd00cf0e5ad95e327b', // WBTC
+    '0xd221812de1bd094f35587ee8e174b07b6167d9af', // WETH
+    '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e', // USDT
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xceba9300f2b948710d2653dd7b07f33a8b32118c', // Native USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e', // USDT
+      'USDT',
+      'Tether USD',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x765de816845861e75a25fca122bb6898b8b1282a', // cUSD
+      'cUSD',
+      'Celo Dollar',
+      BigInt(18)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('CELO', 'Celo', BigInt(18)),
+}
 
-const MONAD_CONFIG = createPlaceholderConfig(
-  '0x188d586ddcf52439676ca21a244753fa19f9ea8e',
-  'MON',
-  'MON'
-)
+const MONAD_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x188d586ddcf52439676ca21a244753fa19f9ea8e',
+  stablecoinWrappedNativePoolId: '0xadaf30776f551bccdfb307c3fd8cdec198ca9a852434c8022ee32d1ccedd8219',
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0x0000000000000000000000000000000000000000', // Native MON
+  minimumNativeLocked: 100000,
+  stablecoinAddresses: [
+    '0x754704bc059f8c67012fed69bc8a327a5aafb603', // USDC
+    '0x00000000efe302beaa2b3e6e1b18d08d69a9012a', // AUSD
+    '0xe7cd86e13ac4309349f30b3435a9d337750fc82d', // USDT
+  ],
+  whitelistTokens: [
+    '0x3bd359c1119da7da1d913d1c4d2b7c461115433a', // WMON
+    '0x754704bc059f8c67012fed69bc8a327a5aafb603', // USDC
+    '0x00000000efe302beaa2b3e6e1b18d08d69a9012a', // AUSD
+    '0x0000000000000000000000000000000000000000', // Native MON
+    '0xe7cd86e13ac4309349f30b3435a9d337750fc82d', // USDT
+    '0xee8c0e9f1bffb4eb878d8f15f368a02a35481242', // WETH
+    '0xea17e5a9efebf1477db45082d67010e2245217f1', // WSOL
+    '0x0555e30da8f98308edb960aa94c0db47230d2b9c', // WBTC
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x754704bc059f8c67012fed69bc8a327a5aafb603', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0xe7cd86e13ac4309349f30b3435a9d337750fc82d', // USDT
+      'USDT',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('MON', 'MON', BigInt(18)),
+}
 
-const XLAYER_CONFIG = createPlaceholderConfig(
-  '0x360E68faCcca8cA495c1B759Fd9EEe466db9FB32',
-  'OKB',
-  'OKB'
-)
+const XLAYER_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x360e68faccca8ca495c1b759fd9eee466db9fb32',
+  stablecoinWrappedNativePoolId: '0x9072107b33ad70c231602b537d91774a43c1837f9b28040ee9bf8cad0a0ab4a1', // OKB/USDC
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0xe538905cf8410324e03a5a23c1c177a474d59b2b', // WOKB
+  minimumNativeLocked: 25,
+  stablecoinAddresses: [
+    '0x74b7f16337b8972027f6196a17a631ac6de26d22', // USDC
+    '0x1e4a5963abfd975d8c9021ce480b42188849d41d', // USDT
+    '0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4', // DAI
+  ],
+  whitelistTokens: [
+    '0xe538905cf8410324e03a5a23c1c177a474d59b2b', // WOKB
+    '0x5a77f1443d16ee5761d310e38b62f77f726bc71c', // WETH
+    '0x1e4a5963abfd975d8c9021ce480b42188849d41d', // USDT
+    '0x779ded0c9e1022225f8e0630b35a9b54be713736', // USDT0
+    '0x74b7f16337b8972027f6196a17a631ac6de26d22', // USDC
+    '0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035', // USDCe
+    '0xea034fb02eb1808c2cc3adbfc15f447b93cbe08e1', // WBTC
+    '0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4', // DAI
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0x74b7f16337b8972027f6196a17a631ac6de26d22', // USDC
+      'USDC',
+      'USD Coin',
+      BigInt(6)
+    ),
+    new StaticTokenDefinition(
+      '0x1e4a5963abfd975d8c9021ce480b42188849d41d', // USDT
+      'USDT',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('OKB', 'OKB', BigInt(18)),
+}
 
-const MEGAETH_CONFIG = createPlaceholderConfig(
-  '0x58dd83c317b03e6ebd72c3e912adf60a8e97aa95',
-  'ETH',
-  'Ethereum'
-)
+const MEGAETH_CONFIG: SubqueryConfig = {
+  poolManagerAddress: '0x58dd83c317b03e6ebd72c3e912adf60a8e97aa95',
+  stablecoinWrappedNativePoolId: '0xf1fc7e1b96823086b3821db02223910112d139b28c6a132befccada2a3ecae89',
+  stablecoinIsToken0: false,
+  wrappedNativeAddress: '0x4200000000000000000000000000000000000006', // WETH
+  minimumNativeLocked: 1,
+  stablecoinAddresses: [
+    '0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb', // USDT0
+    '0xfafddbb3fc7688494971a79cc65dca3ef82079e7', // USDm
+  ],
+  whitelistTokens: [
+    '0x4200000000000000000000000000000000000006', // WETH
+    '0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb', // USDT0
+    '0xfafddbb3fc7688494971a79cc65dca3ef82079e7', // USDm
+    '0x28b7e77f82b25b95953825f1e3ea0e36c1c29861', // MEGA
+  ],
+  tokenOverrides: [
+    new StaticTokenDefinition(
+      '0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb', // USDT0
+      'USDT0',
+      'Tether USD',
+      BigInt(6)
+    ),
+  ],
+  poolsToSkip: [],
+  nativeTokenDetails: new NativeTokenDetails('ETH', 'Ethereum', BigInt(18)),
+}
+
+// Module-level flag to ensure we only log config once
+let configLogged = false
 
 // Mapping of network to config
 const NETWORK_CONFIGS: Record<NetworkName, SubqueryConfig> = {
@@ -480,24 +744,41 @@ const NETWORK_CONFIGS: Record<NetworkName, SubqueryConfig> = {
  * In SubQuery, the chain ID is specified in project.yaml under network.chainId
  *
  * For development/testing, you can pass a specific chainId or network name.
- * Otherwise, it defaults to mainnet.
+ * Otherwise, it uses the runtime configuration from the auto-generated runtime-config.ts.
  */
 export function getConfig(chainId?: string, network?: NetworkName): SubqueryConfig {
+  let selectedConfig: SubqueryConfig
+  let selectedNetworkName: NetworkName
+
   // If network is explicitly provided, use it
   if (network && NETWORK_CONFIGS[network]) {
-    return NETWORK_CONFIGS[network]
+    selectedConfig = NETWORK_CONFIGS[network]
+    selectedNetworkName = network
   }
-
   // If chainId is provided, map to network
-  if (chainId && CHAIN_ID_TO_NETWORK[chainId]) {
-    const networkName = CHAIN_ID_TO_NETWORK[chainId]
-    if (NETWORK_CONFIGS[networkName]) {
-      return NETWORK_CONFIGS[networkName]
-    }
+  else if (chainId && CHAIN_ID_TO_NETWORK[chainId]) {
+    selectedNetworkName = CHAIN_ID_TO_NETWORK[chainId]
+    selectedConfig = NETWORK_CONFIGS[selectedNetworkName]
+  }
+  // Use runtime configuration (from auto-generated file)
+  else if (RUNTIME_NETWORK && NETWORK_CONFIGS[RUNTIME_NETWORK]) {
+    selectedConfig = NETWORK_CONFIGS[RUNTIME_NETWORK]
+    selectedNetworkName = RUNTIME_NETWORK
+  }
+  // Fallback to mainnet (should never reach here in production)
+  else {
+    selectedConfig = NETWORK_CONFIGS[NetworkName.MAINNET]
+    selectedNetworkName = NetworkName.MAINNET
   }
 
-  // Default to mainnet
-  return NETWORK_CONFIGS[NetworkName.MAINNET]
+  // Log which configuration is being used (only on first call)
+  if (!configLogged) {
+    logger.info(`Using SubQuery configuration for network: ${selectedNetworkName} (chainId: ${RUNTIME_CHAIN_ID})`)
+    configLogged = true
+  }
+
+  // Normalize all addresses to lowercase for consistency
+  return normalizeConfig(selectedConfig)
 }
 
 // Export default config (mainnet) for convenience

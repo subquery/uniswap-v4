@@ -16,6 +16,8 @@ import { getConfig } from '../utils/config'
 // Get the configuration for the current chain
 const CONFIG = getConfig()
 
+// Module-level log to verify this file is being loaded
+
 export async function handleSwap(log: SwapLog): Promise<void> {
   if (!log.args) throw new Error('Log args are undefined')
 
@@ -29,6 +31,7 @@ export async function handleSwap(log: SwapLog): Promise<void> {
 
   const poolManager = await PoolManager.get(CONFIG.poolManagerAddress)
   if (!poolManager) {
+    logger.info(`[DEBUG] PoolManager not found at ${CONFIG.poolManagerAddress}, skipping swap`)
     return
   }
 
@@ -106,7 +109,7 @@ export async function handleSwap(log: SwapLog): Promise<void> {
   token0.totalValueLocked = token0.totalValueLocked + amount0
   token0.volumeUSD = token0.volumeUSD + amountTotalUSDTracked
   token0.untrackedVolumeUSD = token0.untrackedVolumeUSD + amountTotalUSDUntracked
-  token0.feesUSD = token0.feesUSD + feesUSD / 2
+  token0.feesUSD = token0.feesUSD + feesUSD
   token0.txCount = token0.txCount + ONE_BI
 
   // update token1 data
@@ -114,7 +117,7 @@ export async function handleSwap(log: SwapLog): Promise<void> {
   token1.totalValueLocked = token1.totalValueLocked + amount1
   token1.volumeUSD = token1.volumeUSD + amountTotalUSDTracked
   token1.untrackedVolumeUSD = token1.untrackedVolumeUSD + amountTotalUSDUntracked
-  token1.feesUSD = token1.feesUSD + feesUSD / 2
+  token1.feesUSD = token1.feesUSD + feesUSD
   token1.txCount = token1.txCount + ONE_BI
 
   // updated pool rates
@@ -197,26 +200,26 @@ export async function handleSwap(log: SwapLog): Promise<void> {
 
   token0DayData.volume = token0DayData.volume + amount0Abs
   token0DayData.volumeUSD = token0DayData.volumeUSD + amountTotalUSDTracked
-  token0DayData.untrackedVolumeUSD = token0DayData.untrackedVolumeUSD + amountTotalUSDUntracked
-  token0DayData.feesUSD = token0DayData.feesUSD + feesUSD / 2
+  token0DayData.untrackedVolumeUSD = token0DayData.untrackedVolumeUSD + amountTotalUSDTracked
+  token0DayData.feesUSD = token0DayData.feesUSD + feesUSD
   await token0DayData.save()
 
   token0HourData.volume = token0HourData.volume + amount0Abs
   token0HourData.volumeUSD = token0HourData.volumeUSD + amountTotalUSDTracked
-  token0HourData.untrackedVolumeUSD = token0HourData.untrackedVolumeUSD + amountTotalUSDUntracked
-  token0HourData.feesUSD = token0HourData.feesUSD + feesUSD / 2
+  token0HourData.untrackedVolumeUSD = token0HourData.untrackedVolumeUSD + amountTotalUSDTracked
+  token0HourData.feesUSD = token0HourData.feesUSD + feesUSD
   await token0HourData.save()
 
   token1DayData.volume = token1DayData.volume + amount1Abs
   token1DayData.volumeUSD = token1DayData.volumeUSD + amountTotalUSDTracked
-  token1DayData.untrackedVolumeUSD = token1DayData.untrackedVolumeUSD + amountTotalUSDUntracked
-  token1DayData.feesUSD = token1DayData.feesUSD + feesUSD / 2
+  token1DayData.untrackedVolumeUSD = token1DayData.untrackedVolumeUSD + amountTotalUSDTracked
+  token1DayData.feesUSD = token1DayData.feesUSD + feesUSD
   await token1DayData.save()
 
   token1HourData.volume = token1HourData.volume + amount1Abs
   token1HourData.volumeUSD = token1HourData.volumeUSD + amountTotalUSDTracked
-  token1HourData.untrackedVolumeUSD = token1HourData.untrackedVolumeUSD + amountTotalUSDUntracked
-  token1HourData.feesUSD = token1HourData.feesUSD + feesUSD / 2
+  token1HourData.untrackedVolumeUSD = token1HourData.untrackedVolumeUSD + amountTotalUSDTracked
+  token1HourData.feesUSD = token1HourData.feesUSD + feesUSD
   await token1HourData.save()
 
   await swap.save()

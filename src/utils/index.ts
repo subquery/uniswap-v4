@@ -10,11 +10,15 @@ export * from './liquidityMath'
 export * from './intervalUpdates'
 
 export function exponentToNumber(decimals: bigint): bigint {
-  let result = BigInt(1);
-  for (let i = ZERO_BI; i < decimals; i += ONE_BI) {
-    result = result * BigInt(10);
+  // Validate decimals to prevent infinite loops
+  if (decimals < BigInt(0) || decimals > BigInt(77)) {
+    logger.error(`[FATAL] Invalid decimals value: ${decimals}. Must be between 0 and 77.`)
+    throw new Error(`Invalid decimals: ${decimals}`)
   }
-  return result;
+  
+  // Use optimized power calculation instead of loop
+  // 10^decimals
+  return BigInt(10) ** decimals
 }
 
 // return 0 if denominator is 0 in division
@@ -32,6 +36,28 @@ export function safeDiv(amount0: bigDecimal, amount1: bigDecimal, precision=18):
  * to minimize the number of operations and their impact on performance.
  */
 export function fastExponentiation(value: bigDecimal, power: number): bigDecimal {
+  // For the specific case of 1.0001^n (used in tick price calculation),
+  // use logarithm-based calculation for better performance with large exponents
+  // Formula: 1.0001^n = e^(n * ln(1.0001))
+  const valueNum = Number(value.getValue())
+
+  // Use logarithm method for large absolute powers (faster than recursive bigDecimal multiplication)
+  if (Math.abs(power) > 100) {
+    const result = Math.pow(valueNum, power)
+    // Handle extreme values
+    if (!isFinite(result) || result === 0) {
+      if (power > 0) {
+        // For very large positive powers, return a large number
+        return new bigDecimal(Number.MAX_SAFE_INTEGER.toString())
+      } else {
+        // For very large negative powers, return a very small number
+        return new bigDecimal((1 / Number.MAX_SAFE_INTEGER).toString())
+      }
+    }
+    return new bigDecimal(result.toString())
+  }
+
+  // For smaller powers, use the original recursive method for precision
   if (power < 0) {
     const result = fastExponentiation(value, -power)
     return safeDiv(ONE_BD, result)
@@ -79,9 +105,14 @@ export async function loadTransaction(event: EthereumLog): Promise<Transaction> 
       blockNumber: BigInt(event.blockNumber),
       timestamp: BigInt(event.block.timestamp),
       gasUsed: BigInt(0), // needs to be moved to transaction receipt
-      gasPrice: BigInt(0) // event.transaction.gasPrice - may need to fetch separately
+      gasPrice: event.transaction?.gasPrice || BigInt(0)
     })
-    await transaction.save()
   }
+  // Always update transaction fields to match v4-subgraph behavior
+  transaction.blockNumber = BigInt(event.blockNumber)
+  transaction.timestamp = BigInt(event.block.timestamp)
+  transaction.gasUsed = BigInt(0)
+  transaction.gasPrice = event.transaction?.gasPrice || BigInt(0)
+  await transaction.save()
   return transaction
 }

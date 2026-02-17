@@ -35,8 +35,7 @@ type Token @entity {
   totalValueLockedUSD: Float!
   totalValueLockedUSDUntracked: Float!
   derivedETH: Float!
-  # whitelistPools: [Pool!]! @derivedFrom(field: "token0")
-  # whitelistPools1: [Pool!]! @derivedFrom(field: "token1")
+  whitelistPools: [String!]!
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
 }
 

@@ -1,36 +1,48 @@
-import { InitializeLog } from '../types/abi-interfaces/PoolManager'
-import { PoolManager, Bundle, Pool, Token } from '../types'
-import { ADDRESS_ZERO, ONE_BI, ZERO_BD, ZERO_BI } from '../utils/constants'
-import { findNativePerToken, getNativePriceInUSD, sqrtPriceX96ToTokenPrices } from '../utils/pricing'
-import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, fetchTokenTotalSupply } from '../utils/token'
-import { NativeTokenDetails } from '../utils/nativeTokenDetails'
-import { StaticTokenDefinition } from '../utils/staticTokenDefinition'
-import { updatePoolDayData, updatePoolHourData } from '../utils/intervalUpdates'
-import { getConfig } from '../utils/config'
+import { InitializeLog } from "../types/abi-interfaces/PoolManager";
+import { PoolManager, Bundle, Pool, Token } from "../types";
+import { ADDRESS_ZERO, ONE_BI, ZERO_BD, ZERO_BI } from "../utils/constants";
+import {
+  findNativePerToken,
+  getNativePriceInUSD,
+  sqrtPriceX96ToTokenPrices,
+} from "../utils/pricing";
+import {
+  fetchTokenDecimals,
+  fetchTokenName,
+  fetchTokenSymbol,
+  fetchTokenTotalSupply,
+} from "../utils/token";
+import { NativeTokenDetails } from "../utils/nativeTokenDetails";
+import { StaticTokenDefinition } from "../utils/staticTokenDefinition";
+import {
+  updatePoolDayData,
+  updatePoolHourData,
+} from "../utils/intervalUpdates";
+import { getConfig } from "../utils/config";
 
 // Get the configuration for the current chain
-const CONFIG = getConfig()
+const CONFIG = getConfig();
 
 export async function handleInitialize(log: InitializeLog): Promise<void> {
-  if (!log.args) throw new Error('Log args are undefined')
+  if (!log.args) throw new Error("Log args are undefined");
 
-  const poolManagerAddress = CONFIG.poolManagerAddress.toLowerCase()
-  const whitelistTokens = CONFIG.whitelistTokens
-  const tokenOverrides = CONFIG.tokenOverrides
-  const poolsToSkip = CONFIG.poolsToSkip
-  const wrappedNativeAddress = CONFIG.wrappedNativeAddress
-  const stablecoinAddresses = CONFIG.stablecoinAddresses
-  const minimumNativeLocked = CONFIG.minimumNativeLocked
-  const nativeTokenDetails = CONFIG.nativeTokenDetails
+  const poolManagerAddress = CONFIG.poolManagerAddress.toLowerCase();
+  const whitelistTokens = CONFIG.whitelistTokens;
+  const tokenOverrides = CONFIG.tokenOverrides;
+  const poolsToSkip = CONFIG.poolsToSkip;
+  const wrappedNativeAddress = CONFIG.wrappedNativeAddress;
+  const stablecoinAddresses = CONFIG.stablecoinAddresses;
+  const minimumNativeLocked = CONFIG.minimumNativeLocked;
+  const nativeTokenDetails = CONFIG.nativeTokenDetails;
 
-  const poolId = log.args.id.toLowerCase()
+  const poolId = log.args.id.toLowerCase();
 
   if (poolsToSkip.includes(poolId)) {
-    return
+    return;
   }
 
   // Load or create pool manager
-  let poolManager = await PoolManager.get(poolManagerAddress)
+  let poolManager = await PoolManager.get(poolManagerAddress);
   if (poolManager === undefined) {
     poolManager = PoolManager.create({
       id: poolManagerAddress,
@@ -45,113 +57,94 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
       totalValueLockedUSDUntracked: 0,
       totalValueLockedETHUntracked: 0,
       txCount: ZERO_BI,
-      owner: ADDRESS_ZERO
-    })
+      owner: ADDRESS_ZERO,
+    });
 
     // Create new bundle for tracking eth price
     const bundle = Bundle.create({
-      id: '1',
-      ethPriceUSD: 0
-    })
-    await bundle.save()
+      id: "1",
+      ethPriceUSD: 0,
+    });
+    await bundle.save();
   }
 
-  poolManager.poolCount = poolManager.poolCount + ONE_BI
+  poolManager.poolCount = poolManager.poolCount + ONE_BI;
 
   // Create tokens
-  const token0Id = log.args.currency0.toLowerCase()
-  const token1Id = log.args.currency1.toLowerCase()
+  const token0Id = log.args.currency0.toLowerCase();
+  const token1Id = log.args.currency1.toLowerCase();
 
   // Check if tokens exist in parallel
   const [existingToken0, existingToken1] = await Promise.all([
     Token.get(token0Id),
-    Token.get(token1Id)
-  ])
+    Token.get(token1Id),
+  ]);
 
-  let token0 = existingToken0
-  let token1 = existingToken1
+  let token0 = existingToken0;
+  let token1 = existingToken1;
 
   // Collect promises for tokens that need to be created
-  const tokenCreationPromises: Promise<void>[] = []
+  const tokenCreationPromises: Promise<void>[] = [];
 
   if (token0 === undefined) {
-    tokenCreationPromises.push(
-      (async () => {
-        // Fetch token details in parallel for better performance
-        const [symbol, name, totalSupply, decimals] = await Promise.all([
-          fetchTokenSymbol(token0Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenName(token0Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenTotalSupply(token0Id),
-          fetchTokenDecimals(token0Id, nativeTokenDetails)
-        ])
+    const [symbol, name, totalSupply, decimals] = await Promise.all([
+      fetchTokenSymbol(token0Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenName(token0Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenTotalSupply(token0Id),
+      fetchTokenDecimals(token0Id, tokenOverrides, nativeTokenDetails),
+    ]);
 
-        token0 = Token.create({
-          id: token0Id,
-          symbol,
-          name,
-          totalSupply,
-          decimals,
-          derivedETH: 0,
-          volume: 0,
-          volumeUSD: 0,
-          feesUSD: 0,
-          untrackedVolumeUSD: 0,
-          totalValueLocked: 0,
-          totalValueLockedUSD: 0,
-          totalValueLockedUSDUntracked: 0,
-          txCount: ZERO_BI,
-          poolCount: ZERO_BI
-        })
-
-        const derivedETH = await findNativePerToken(token0, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
-        token0.derivedETH = derivedETH
-        await token0.save()
-      })()
-    )
+    token0 = Token.create({
+      id: token0Id,
+      symbol,
+      name,
+      totalSupply,
+      decimals: decimals ?? BigInt(18),
+      derivedETH: 0,
+      volume: 0,
+      volumeUSD: 0,
+      feesUSD: 0,
+      untrackedVolumeUSD: 0,
+      totalValueLocked: 0,
+      totalValueLockedUSD: 0,
+      totalValueLockedUSDUntracked: 0,
+      txCount: ZERO_BI,
+      poolCount: ZERO_BI,
+      whitelistPools: [],
+    });
   }
 
   if (token1 === undefined) {
-    tokenCreationPromises.push(
-      (async () => {
-        // Fetch token details in parallel for better performance
-        const [symbol, name, totalSupply, decimals] = await Promise.all([
-          fetchTokenSymbol(token1Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenName(token1Id, tokenOverrides, nativeTokenDetails),
-          fetchTokenTotalSupply(token1Id),
-          fetchTokenDecimals(token1Id, nativeTokenDetails)
-        ])
+    const [symbol, name, totalSupply, decimals] = await Promise.all([
+      fetchTokenSymbol(token1Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenName(token1Id, tokenOverrides, nativeTokenDetails),
+      fetchTokenTotalSupply(token1Id),
+      fetchTokenDecimals(token1Id, tokenOverrides, nativeTokenDetails),
+    ]);
 
-        token1 = Token.create({
-          id: token1Id,
-          symbol,
-          name,
-          totalSupply,
-          decimals,
-          derivedETH: 0,
-          volume: 0,
-          volumeUSD: 0,
-          feesUSD: 0,
-          untrackedVolumeUSD: 0,
-          totalValueLocked: 0,
-          totalValueLockedUSD: 0,
-          totalValueLockedUSDUntracked: 0,
-          txCount: ZERO_BI,
-          poolCount: ZERO_BI
-        })
-
-        const derivedETH = await findNativePerToken(token1, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
-        token1.derivedETH = derivedETH
-        await token1.save()
-      })()
-    )
+    token1 = Token.create({
+      id: token1Id,
+      symbol,
+      name,
+      totalSupply,
+      decimals: decimals ?? BigInt(18),
+      derivedETH: 0,
+      volume: 0,
+      volumeUSD: 0,
+      feesUSD: 0,
+      untrackedVolumeUSD: 0,
+      totalValueLocked: 0,
+      totalValueLockedUSD: 0,
+      totalValueLockedUSDUntracked: 0,
+      txCount: ZERO_BI,
+      poolCount: ZERO_BI,
+      whitelistPools: [],
+    });
   }
-
-  // Execute all token creation promises in parallel
-  await Promise.all(tokenCreationPromises)
 
   // Ensure tokens are defined (they should be after creation)
   if (!token0 || !token1) {
-    throw new Error('Failed to create or load tokens')
+    throw new Error("Failed to create or load tokens");
   }
 
   // Create pool
@@ -184,55 +177,74 @@ export async function handleInitialize(log: InitializeLog): Promise<void> {
     totalValueLockedUSDUntracked: 0,
     liquidityProviderCount: ZERO_BI,
     txCount: ZERO_BI,
-    hooks: log.args.hooks.toLowerCase()
-  })
+    hooks: log.args.hooks.toLowerCase(),
+  });
 
   // Set initial prices
   const prices = sqrtPriceX96ToTokenPrices(
     BigInt(log.args.sqrtPriceX96.toString()),
     token0,
     token1,
-    nativeTokenDetails
-  )
-  pool.token0Price = prices[0]
-  pool.token1Price = prices[1]
-
-  // Update token pool counts
-  token0.poolCount = token0.poolCount + ONE_BI
-  token1.poolCount = token1.poolCount + ONE_BI
+    nativeTokenDetails,
+  );
+  pool.token0Price = prices[0];
+  pool.token1Price = prices[1];
 
   // Update whitelisted pools for USD pricing
-  // Note: The schema uses string IDs, not entity references, so we track the pool IDs separately
-  // The whitelist is used for determining which tokens to use for tracked volume calculations
+  // If token0 is whitelisted, add this pool to token1's whitelist
+  if (whitelistTokens.includes(token0.id)) {
+    if (!token1.whitelistPools.includes(poolId)) {
+      token1.whitelistPools.push(poolId);
+    }
+  }
+  // If token1 is whitelisted, add this pool to token0's whitelist
+  if (whitelistTokens.includes(token1.id)) {
+    if (!token0.whitelistPools.includes(poolId)) {
+      token0.whitelistPools.push(poolId);
+    }
+  }
 
   // Save all entities
-  await pool.save()
-  await token0.save()
-  await token1.save()
-  await poolManager.save()
+  await pool.save();
+  await token0.save();
+  await token1.save();
+  await poolManager.save();
 
   // update prices
   // update ETH price now that prices could have changed
-  const bundle = await Bundle.get('1')
+  const bundle = await Bundle.get("1");
   if (bundle) {
-    bundle.ethPriceUSD = await getNativePriceInUSD(CONFIG.stablecoinWrappedNativePoolId, CONFIG.stablecoinIsToken0)
-    await bundle.save()
+    bundle.ethPriceUSD = await getNativePriceInUSD(
+      CONFIG.stablecoinWrappedNativePoolId,
+      CONFIG.stablecoinIsToken0,
+    );
+    await bundle.save();
   }
 
   // Update interval data for the new pool
-  await updatePoolDayData(poolId, log)
-  await updatePoolHourData(poolId, log)
+  await updatePoolDayData(poolId, log);
+  await updatePoolHourData(poolId, log);
 
   // Recalculate derivedETH after price updates
   if (token0.id !== wrappedNativeAddress && token0.id !== ADDRESS_ZERO) {
-    const derivedETH = await findNativePerToken(token0, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
-    token0.derivedETH = derivedETH
+    const derivedETH = await findNativePerToken(
+      token0,
+      wrappedNativeAddress,
+      stablecoinAddresses,
+      minimumNativeLocked,
+    );
+    token0.derivedETH = derivedETH;
   }
   if (token1.id !== wrappedNativeAddress && token1.id !== ADDRESS_ZERO) {
-    const derivedETH = await findNativePerToken(token1, wrappedNativeAddress, stablecoinAddresses, minimumNativeLocked)
-    token1.derivedETH = derivedETH
+    const derivedETH = await findNativePerToken(
+      token1,
+      wrappedNativeAddress,
+      stablecoinAddresses,
+      minimumNativeLocked,
+    );
+    token1.derivedETH = derivedETH;
   }
 
-  await token0.save()
-  await token1.save()
+  await token0.save();
+  await token1.save();
 }

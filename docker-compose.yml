@@ -34,16 +34,19 @@ services:
     volumes:
       - ./:/app
     command:
-      - ${SUB_COMMAND:-} # set SUB_COMMAND env variable to "test" to run tests
+      # - ${SUB_COMMAND:-} # set SUB_COMMAND env variable to "test" to run tests
+      # - reindex
+      # - --targetHeight=49052351
       - -f=/app
       - --db-schema=app
       # - --workers=4
-      - --batch-size=1000
+      - --batch-size=10
       - --unfinalized-blocks=true
       - --network-endpoint="https://eth.api.onfinality.io/rpc?apikey=b8b99961-e876-41dd-bd7d-0c143f3a3428"
-      - --network-dictionary="http://host.docker.internal:8080/ethereum-mainnet"
+      # - --network-endpoint="https://rpc.xlayer.tech"
+      # - --network-dictionary="http://host.docker.internal:8080/ethereum-mainnet"
+      # - --dictionary-registry="false"
       # - --debug="dictionary-v2"
-      - --dictionary-registry=false
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://subquery-node:3000/ready"]
       interval: 3s
@@ -59,7 +62,7 @@ services:
         condition: service_healthy
       "subquery-node":
         condition: service_healthy
-    restart: always
+    restart: unless-stopped
     environment:
       DB_USER: postgres
       DB_PASS: postgres

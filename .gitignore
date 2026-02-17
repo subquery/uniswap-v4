@@ -58,3 +58,9 @@ Thumbs.db
 .yarn
 
 .DS_Store
+
+.project-cid
+.claude
+.serena
+scripts/browser-scripts
+.env
