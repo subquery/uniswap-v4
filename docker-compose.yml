@@ -62,7 +62,7 @@ services:
         condition: service_healthy
       "subquery-node":
         condition: service_healthy
-    restart: always
+    restart: unless-stopped
     environment:
       DB_USER: postgres
       DB_PASS: postgres

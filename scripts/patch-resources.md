@@ -13,5 +13,5 @@ bash ./scripts/patch-resources.sh --mapped --dry-run
 
 # Interactive mode: search by keyword
 bash ./scripts/patch-resources-interactive.sh uniswap
-bash ./scripts/patch-resources-interactive.sh uniswap --dry-run
+bash ./scripts/patch-resources-interactive.sh mainnet --dry-run
 ```
